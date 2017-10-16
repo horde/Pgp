@@ -10,7 +10,7 @@
   <email>slusarz@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2016-06-28</date>
+ <date>2017-10-17</date>
  <version>
   <release>1.0.0alpha1</release>
   <api>1.0.0</api>
@@ -165,6 +165,7 @@
         <file name="code_coverage_id_rsa" role="php" />
         <file name="install-php-extensions.sh" role="php" />
         <file name="run-phpunit.sh" role="php" />
+        <file name="setup-composer.sh" role="php" />
         <file name="setup-secure-shell.sh" role="php" />
         <file name="upload-code-coverage-html.sh" role="php" />
        </dir> <!-- /bundle/vendor/phpseclib/phpseclib/travis -->
@@ -173,6 +174,8 @@
        <file name=".travis.yml" role="php" />
        <file name="AUTHORS" role="php" />
        <file name="CHANGELOG.md" role="php" />
+       <file name="composer.json" role="php" />
+       <file name="composer.lock" role="php" />
        <file name="LICENSE" role="php" />
        <file name="phpunit.xml.dist" role="php" />
        <file name="README.md" role="php" />
@@ -301,6 +304,7 @@
        <file name=".gitignore" role="php" />
        <file name=".travis.yml" role="php" />
        <file name="AUTHORS" role="php" />
+       <file name="composer.json" role="php" />
        <file name="Doxyfile" role="php" />
        <file name="phpunit.xml" role="php" />
        <file name="README.md" role="php" />
@@ -312,13 +316,6 @@
     </dir> <!-- /bundle/vendor -->
     <file name="CHANGED" role="php" />
    </dir> <!-- /bundle -->
-   <dir name="doc">
-    <dir name="Horde">
-     <dir name="Pgp">
-      <file name="COPYING" role="doc" />
-     </dir> <!-- /doc/Horde/Pgp -->
-    </dir> <!-- /doc/Horde -->
-   </dir> <!-- /doc -->
    <dir name="lib">
     <dir name="Horde">
      <dir name="Pgp">
@@ -345,7 +342,9 @@
       <file name="Exception.php" role="php" />
       <file name="Keyserver.php" role="php" />
       <file name="Mime.php" role="php" />
-      <file name="Translation.php" role="php" />
+      <file name="Translation.php" role="php">
+       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+      </file>
      </dir> <!-- /lib/Horde/Pgp -->
      <file name="Pgp.php" role="php" />
     </dir> <!-- /lib/Horde -->
@@ -393,6 +392,7 @@
      </dir> <!-- /test/Horde/Pgp -->
     </dir> <!-- /test/Horde -->
    </dir> <!-- /test -->
+   <file name="LICENSE" role="doc" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -491,14 +491,13 @@
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/.gitignore" name="bundle/vendor/phpseclib/phpseclib/.gitignore" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/.travis.yml" name="bundle/vendor/phpseclib/phpseclib/.travis.yml" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/AUTHORS" name="bundle/vendor/phpseclib/phpseclib/AUTHORS" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/CHANGELOG.md" name="bundle/vendor/phpseclib/phpseclib/CHANGELOG.md" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/LICENSE" name="bundle/vendor/phpseclib/phpseclib/LICENSE" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpunit.xml.dist" name="bundle/vendor/phpseclib/phpseclib/phpunit.xml.dist" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/README.md" name="bundle/vendor/phpseclib/phpseclib/README.md" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/build/build.xml" name="bundle/vendor/phpseclib/phpseclib/build/build.xml" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/build/code-sniffer-ruleset-tests.xml" name="bundle/vendor/phpseclib/phpseclib/build/code-sniffer-ruleset-tests.xml" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/build/code-sniffer-ruleset.xml" name="bundle/vendor/phpseclib/phpseclib/build/code-sniffer-ruleset.xml" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/openssl.cnf" name="bundle/vendor/phpseclib/phpseclib/phpseclib/openssl.cnf" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/CHANGELOG.md" name="bundle/vendor/phpseclib/phpseclib/CHANGELOG.md" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/composer.json" name="bundle/vendor/phpseclib/phpseclib/composer.json" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/composer.lock" name="bundle/vendor/phpseclib/phpseclib/composer.lock" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/LICENSE" name="bundle/vendor/phpseclib/phpseclib/LICENSE" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Crypt/AES.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Crypt/AES.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Crypt/Base.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Crypt/Base.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Crypt/Blowfish.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Crypt/Blowfish.php" />
@@ -513,19 +512,20 @@
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Crypt/Twofish.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Crypt/Twofish.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/File/ANSI.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/File/ANSI.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/File/ASN1.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/File/ASN1.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/File/X509.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/File/X509.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/File/ASN1/Element.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/File/ASN1/Element.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/File/X509.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/File/X509.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Math/BigInteger.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Math/BigInteger.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Net/SCP.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Net/SCP.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Net/SFTP.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Net/SFTP.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Net/SFTP/Stream.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Net/SFTP/Stream.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Net/SSH1.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Net/SSH1.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Net/SSH2.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Net/SSH2.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/Net/SFTP/Stream.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/Net/SFTP/Stream.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/openssl.cnf" name="bundle/vendor/phpseclib/phpseclib/phpseclib/openssl.cnf" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/System/SSH/Agent.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/System/SSH/Agent.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpseclib/System/SSH/Agent/Identity.php" name="bundle/vendor/phpseclib/phpseclib/phpseclib/System/SSH/Agent/Identity.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpunit.xml.dist" name="bundle/vendor/phpseclib/phpseclib/phpunit.xml.dist" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/README.md" name="bundle/vendor/phpseclib/phpseclib/README.md" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/bootstrap.php" name="bundle/vendor/phpseclib/phpseclib/tests/bootstrap.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/PhpseclibFunctionalTestCase.php" name="bundle/vendor/phpseclib/phpseclib/tests/PhpseclibFunctionalTestCase.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/PhpseclibTestCase.php" name="bundle/vendor/phpseclib/phpseclib/tests/PhpseclibTestCase.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Functional/Net/SCPSSH2UserStoryTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Functional/Net/SCPSSH2UserStoryTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Functional/Net/SFTPLargeFileTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Functional/Net/SFTPLargeFileTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Functional/Net/SFTPStreamTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Functional/Net/SFTPStreamTest.php" />
@@ -533,28 +533,30 @@
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Functional/Net/SFTPUserStoryTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Functional/Net/SFTPUserStoryTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Functional/Net/SSH2AgentTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Functional/Net/SSH2AgentTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Functional/Net/SSH2Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Functional/Net/SSH2Test.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/BlowfishTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/BlowfishTest.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/DESTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/DESTest.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RandomTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RandomTest.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RC2Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RC2Test.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RC4Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RC4Test.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/TripleDESTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/TripleDESTest.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/TwofishTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/TwofishTest.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/PhpseclibFunctionalTestCase.php" name="bundle/vendor/phpseclib/phpseclib/tests/PhpseclibFunctionalTestCase.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/PhpseclibTestCase.php" name="bundle/vendor/phpseclib/phpseclib/tests/PhpseclibTestCase.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/AES/InternalTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/AES/InternalTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/AES/McryptTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/AES/McryptTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/AES/OpenSSLTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/AES/OpenSSLTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/AES/TestCase.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/AES/TestCase.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/BlowfishTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/BlowfishTest.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/DESTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/DESTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/MD5Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/MD5Test.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/SHA256Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/SHA256Test.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/SHA256_96Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/SHA256_96Test.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/SHA512Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/SHA512Test.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/SHA512_96Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/SHA512_96Test.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/TestCase.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/Hash/TestCase.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RandomTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RandomTest.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RC2Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RC2Test.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RC4Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RC4Test.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RSA/LoadKeyTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RSA/LoadKeyTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RSA/ModeTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/RSA/ModeTest.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/TripleDESTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/TripleDESTest.php" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/Crypt/TwofishTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/Crypt/TwofishTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/File/ANSITest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/File/ANSITest.php" />
-   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/File/ASN1Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/File/ASN1Test.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/File/ASN1/FE.pdf.p7m" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/File/ASN1/FE.pdf.p7m" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/File/ASN1Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/File/ASN1Test.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/File/X509/CSRTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/File/X509/CSRTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/File/X509/SPKACTest.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/File/X509/SPKACTest.php" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/tests/Unit/File/X509/X509Test.php" name="bundle/vendor/phpseclib/phpseclib/tests/Unit/File/X509/X509Test.php" />
@@ -569,16 +571,14 @@
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/code_coverage_id_rsa" name="bundle/vendor/phpseclib/phpseclib/travis/code_coverage_id_rsa" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/install-php-extensions.sh" name="bundle/vendor/phpseclib/phpseclib/travis/install-php-extensions.sh" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/run-phpunit.sh" name="bundle/vendor/phpseclib/phpseclib/travis/run-phpunit.sh" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/setup-composer.sh" name="bundle/vendor/phpseclib/phpseclib/travis/setup-composer.sh" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/setup-secure-shell.sh" name="bundle/vendor/phpseclib/phpseclib/travis/setup-secure-shell.sh" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/upload-code-coverage-html.sh" name="bundle/vendor/phpseclib/phpseclib/travis/upload-code-coverage-html.sh" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/.gitignore" name="bundle/vendor/singpolyma/openpgp-php/.gitignore" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/.travis.yml" name="bundle/vendor/singpolyma/openpgp-php/.travis.yml" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/AUTHORS" name="bundle/vendor/singpolyma/openpgp-php/AUTHORS" />
+   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/composer.json" name="bundle/vendor/singpolyma/openpgp-php/composer.json" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/Doxyfile" name="bundle/vendor/singpolyma/openpgp-php/Doxyfile" />
-   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/phpunit.xml" name="bundle/vendor/singpolyma/openpgp-php/phpunit.xml" />
-   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/README.md" name="bundle/vendor/singpolyma/openpgp-php/README.md" />
-   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/UNLICENSE" name="bundle/vendor/singpolyma/openpgp-php/UNLICENSE" />
-   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/VERSION" name="bundle/vendor/singpolyma/openpgp-php/VERSION" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/examples/clearsign.php" name="bundle/vendor/singpolyma/openpgp-php/examples/clearsign.php" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/examples/deASCIIdeCrypt.php" name="bundle/vendor/singpolyma/openpgp-php/examples/deASCIIdeCrypt.php" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/examples/encryptDecrypt.php" name="bundle/vendor/singpolyma/openpgp-php/examples/encryptDecrypt.php" />
@@ -589,9 +589,9 @@
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/lib/openpgp_crypt_rsa.php" name="bundle/vendor/singpolyma/openpgp-php/lib/openpgp_crypt_rsa.php" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/lib/openpgp_crypt_symmetric.php" name="bundle/vendor/singpolyma/openpgp-php/lib/openpgp_crypt_symmetric.php" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/lib/openpgp_mcrypt_wrapper.php" name="bundle/vendor/singpolyma/openpgp-php/lib/openpgp_mcrypt_wrapper.php" />
+   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/phpunit.xml" name="bundle/vendor/singpolyma/openpgp-php/phpunit.xml" />
+   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/README.md" name="bundle/vendor/singpolyma/openpgp-php/README.md" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/bootstrap.php" name="bundle/vendor/singpolyma/openpgp-php/tests/bootstrap.php" />
-   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/phpseclib_suite.php" name="bundle/vendor/singpolyma/openpgp-php/tests/phpseclib_suite.php" />
-   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/suite.php" name="bundle/vendor/singpolyma/openpgp-php/tests/suite.php" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/data/000001-006.public_key" name="bundle/vendor/singpolyma/openpgp-php/tests/data/000001-006.public_key" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/data/000002-013.user_id" name="bundle/vendor/singpolyma/openpgp-php/tests/data/000002-013.user_id" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/data/000003-002.sig" name="bundle/vendor/singpolyma/openpgp-php/tests/data/000003-002.sig" />
@@ -689,19 +689,18 @@
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-dsa-sha384.txt.gpg" name="bundle/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-dsa-sha384.txt.gpg" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-dsa.gpg" name="bundle/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-dsa.gpg" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-rsa.gpg" name="bundle/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-rsa.gpg" />
-   <install as="COPYING" name="doc/Horde/Pgp/COPYING" />
+   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/phpseclib_suite.php" name="bundle/vendor/singpolyma/openpgp-php/tests/phpseclib_suite.php" />
+   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/suite.php" name="bundle/vendor/singpolyma/openpgp-php/tests/suite.php" />
+   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/UNLICENSE" name="bundle/vendor/singpolyma/openpgp-php/UNLICENSE" />
+   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/VERSION" name="bundle/vendor/singpolyma/openpgp-php/VERSION" />
    <install as="Horde/Pgp.php" name="lib/Horde/Pgp.php" />
    <install as="Horde/Pgp/Armor.php" name="lib/Horde/Pgp/Armor.php" />
    <install as="Horde/Pgp/Backend.php" name="lib/Horde/Pgp/Backend.php" />
-   <install as="Horde/Pgp/Element.php" name="lib/Horde/Pgp/Element.php" />
-   <install as="Horde/Pgp/Exception.php" name="lib/Horde/Pgp/Exception.php" />
-   <install as="Horde/Pgp/Keyserver.php" name="lib/Horde/Pgp/Keyserver.php" />
-   <install as="Horde/Pgp/Mime.php" name="lib/Horde/Pgp/Mime.php" />
-   <install as="Horde/Pgp/Translation.php" name="lib/Horde/Pgp/Translation.php" />
    <install as="Horde/Pgp/Backend/Openpgp.php" name="lib/Horde/Pgp/Backend/Openpgp.php" />
    <install as="Horde/Pgp/Crypt/Cast128.php" name="lib/Horde/Pgp/Crypt/Cast128.php" />
    <install as="Horde/Pgp/Crypt/DSA.php" name="lib/Horde/Pgp/Crypt/DSA.php" />
    <install as="Horde/Pgp/Crypt/Elgamal.php" name="lib/Horde/Pgp/Crypt/Elgamal.php" />
+   <install as="Horde/Pgp/Element.php" name="lib/Horde/Pgp/Element.php" />
    <install as="Horde/Pgp/Element/Key.php" name="lib/Horde/Pgp/Element/Key.php" />
    <install as="Horde/Pgp/Element/Message.php" name="lib/Horde/Pgp/Element/Message.php" />
    <install as="Horde/Pgp/Element/PrivateKey.php" name="lib/Horde/Pgp/Element/PrivateKey.php" />
@@ -709,16 +708,17 @@
    <install as="Horde/Pgp/Element/Signature.php" name="lib/Horde/Pgp/Element/Signature.php" />
    <install as="Horde/Pgp/Element/SignedMessage.php" name="lib/Horde/Pgp/Element/SignedMessage.php" />
    <install as="Horde/Pgp/Element/Text.php" name="lib/Horde/Pgp/Element/Text.php" />
+   <install as="Horde/Pgp/Exception.php" name="lib/Horde/Pgp/Exception.php" />
+   <install as="Horde/Pgp/Keyserver.php" name="lib/Horde/Pgp/Keyserver.php" />
+   <install as="Horde/Pgp/Mime.php" name="lib/Horde/Pgp/Mime.php" />
+   <install as="Horde/Pgp/Translation.php" name="lib/Horde/Pgp/Translation.php" />
+   <install as="LICENSE" name="LICENSE" />
    <install as="locale/Horde_Pgp.pot" name="locale/Horde_Pgp.pot" />
    <install as="Horde/Pgp/AllTests.php" name="test/Horde/Pgp/AllTests.php" />
    <install as="Horde/Pgp/ArmorTest.php" name="test/Horde/Pgp/ArmorTest.php" />
-   <install as="Horde/Pgp/bootstrap.php" name="test/Horde/Pgp/bootstrap.php" />
-   <install as="Horde/Pgp/KeyserverTest.php" name="test/Horde/Pgp/KeyserverTest.php" />
-   <install as="Horde/Pgp/KeyTest.php" name="test/Horde/Pgp/KeyTest.php" />
-   <install as="Horde/Pgp/MimeTest.php" name="test/Horde/Pgp/MimeTest.php" />
-   <install as="Horde/Pgp/phpunit.xml" name="test/Horde/Pgp/phpunit.xml" />
    <install as="Horde/Pgp/Backend/OpenpgpTest.php" name="test/Horde/Pgp/Backend/OpenpgpTest.php" />
    <install as="Horde/Pgp/Backend/TestBase.php" name="test/Horde/Pgp/Backend/TestBase.php" />
+   <install as="Horde/Pgp/bootstrap.php" name="test/Horde/Pgp/bootstrap.php" />
    <install as="Horde/Pgp/Element/MessageTest.php" name="test/Horde/Pgp/Element/MessageTest.php" />
    <install as="Horde/Pgp/Element/SignedMessageTest.php" name="test/Horde/Pgp/Element/SignedMessageTest.php" />
    <install as="Horde/Pgp/fixtures/clear.txt" name="test/Horde/Pgp/fixtures/clear.txt" />
@@ -738,7 +738,11 @@
    <install as="Horde/Pgp/fixtures/pgp_signature2.txt" name="test/Horde/Pgp/fixtures/pgp_signature2.txt" />
    <install as="Horde/Pgp/fixtures/pgp_signed.txt" name="test/Horde/Pgp/fixtures/pgp_signed.txt" />
    <install as="Horde/Pgp/fixtures/pgp_signed2.txt" name="test/Horde/Pgp/fixtures/pgp_signed2.txt" />
-   </filelist>
+   <install as="Horde/Pgp/KeyserverTest.php" name="test/Horde/Pgp/KeyserverTest.php" />
+   <install as="Horde/Pgp/KeyTest.php" name="test/Horde/Pgp/KeyTest.php" />
+   <install as="Horde/Pgp/MimeTest.php" name="test/Horde/Pgp/MimeTest.php" />
+   <install as="Horde/Pgp/phpunit.xml" name="test/Horde/Pgp/phpunit.xml" />
+  </filelist>
  </phprelease>
  <changelog>
  </changelog>
