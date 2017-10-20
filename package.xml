@@ -10,7 +10,7 @@
   <email>slusarz@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2017-10-17</date>
+ <date>2017-10-20</date>
  <version>
   <release>1.0.0alpha1</release>
   <api>1.0.0</api>
@@ -388,7 +388,6 @@
       <file name="KeyserverTest.php" role="test" />
       <file name="KeyTest.php" role="test" />
       <file name="MimeTest.php" role="test" />
-      <file name="phpunit.xml" role="test" />
      </dir> <!-- /test/Horde/Pgp -->
     </dir> <!-- /test/Horde -->
    </dir> <!-- /test -->
@@ -741,7 +740,6 @@
    <install as="Horde/Pgp/KeyserverTest.php" name="test/Horde/Pgp/KeyserverTest.php" />
    <install as="Horde/Pgp/KeyTest.php" name="test/Horde/Pgp/KeyTest.php" />
    <install as="Horde/Pgp/MimeTest.php" name="test/Horde/Pgp/MimeTest.php" />
-   <install as="Horde/Pgp/phpunit.xml" name="test/Horde/Pgp/phpunit.xml" />
   </filelist>
  </phprelease>
  <changelog>
