@@ -5,3 +5,38 @@ full: PGP library
 description: Provides an API for dealing with OpenPGP (RFC 4880) data.
 list: dev
 type: library
+authors:
+  -
+    name: Michael Slusarz
+    user: slusarz
+    email: slusarz@horde.org
+    active: true
+    role: lead
+version:
+  release: 1.0.0alpha1
+  api: 1.0.0
+state:
+  release: alpha
+  api: alpha
+license:
+  identifier: LGPL-2.1
+  uri: http://www.horde.org/licenses/lgpl21
+dependencies:
+  required:
+    php: ^5.3.3 || ^7
+    pear:
+      pear.horde.org/Horde_Exception: ^2
+      pear.horde.org/Horde_Http: ^2
+      pear.horde.org/Horde_Mime: ^2.8
+      pear.horde.org/Horde_Stream: ^1.5
+      pear.horde.org/Horde_Translation: ^2.2
+      pear.horde.org/Horde_Url: ^2
+      pear.horde.org/Horde_Util: ^2
+    ext:
+      hash: '*'
+  optional:
+    pear:
+      pear.horde.org/Horde_Test: ^2.1
+    ext:
+      openssl: '*'
+      zlib: '*'
