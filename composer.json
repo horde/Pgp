@@ -1,0 +1,47 @@
+{
+    "name": "horde/pgp",
+    "description": "Horde PGP API",
+    "type": "library",
+    "homepage": "https://pear.horde.org",
+    "license": "LGPL-2.1",
+    "authors": [
+        {
+            "name": "Michael Slusarz",
+            "email": "slusarz@horde.org",
+            "role": "lead"
+        }
+    ],
+    "version": "1.0.0alpha1",
+    "time": "2017-10-27",
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "https://pear.horde.org"
+        }
+    ],
+    "require": {
+        "php": "^5.3.3 || ^7",
+        "pear-pear.horde.org/Horde_Exception": "^2",
+        "pear-pear.horde.org/Horde_Http": "^2",
+        "pear-pear.horde.org/Horde_Mime": "^2.8",
+        "pear-pear.horde.org/Horde_Stream": "^1.5",
+        "pear-pear.horde.org/Horde_Translation": "^2.2",
+        "pear-pear.horde.org/Horde_Url": "^2",
+        "pear-pear.horde.org/Horde_Util": "^2",
+        "ext-hash": "*"
+    },
+    "suggest": {
+        "pear-pear.horde.org/Horde_Test": "^2.1",
+        "ext-openssl": "*",
+        "ext-zlib": "*"
+    },
+    "replace": {
+        "pear-pear.horde.org/Horde_Pgp": "1.*",
+        "pear-horde/Horde_Pgp": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Horde_Pgp": "lib/"
+        }
+    }
+}
