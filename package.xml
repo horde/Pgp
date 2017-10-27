@@ -10,7 +10,7 @@
   <email>slusarz@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2017-10-20</date>
+ <date>2017-10-27</date>
  <version>
   <release>1.0.0alpha1</release>
   <api>1.0.0</api>
@@ -316,6 +316,13 @@
     </dir> <!-- /bundle/vendor -->
     <file name="CHANGED" role="php" />
    </dir> <!-- /bundle -->
+   <dir name="doc">
+    <dir name="Horde">
+     <dir name="Pgp">
+      <file name="CHANGES" role="doc" />
+     </dir> <!-- /doc/Horde/Pgp -->
+    </dir> <!-- /doc/Horde -->
+   </dir> <!-- /doc -->
    <dir name="lib">
     <dir name="Horde">
      <dir name="Pgp">
@@ -692,6 +699,7 @@
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/suite.php" name="bundle/vendor/singpolyma/openpgp-php/tests/suite.php" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/UNLICENSE" name="bundle/vendor/singpolyma/openpgp-php/UNLICENSE" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/VERSION" name="bundle/vendor/singpolyma/openpgp-php/VERSION" />
+   <install as="CHANGES" name="doc/Horde/Pgp/CHANGES" />
    <install as="Horde/Pgp.php" name="lib/Horde/Pgp.php" />
    <install as="Horde/Pgp/Armor.php" name="lib/Horde/Pgp/Armor.php" />
    <install as="Horde/Pgp/Backend.php" name="lib/Horde/Pgp/Backend.php" />
