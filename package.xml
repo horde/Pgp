@@ -10,7 +10,7 @@
   <email>slusarz@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2016-06-28</date>
+ <date>2017-10-27</date>
  <version>
   <release>1.0.0alpha1</release>
   <api>1.0.0</api>
@@ -165,6 +165,7 @@
         <file name="code_coverage_id_rsa" role="php" />
         <file name="install-php-extensions.sh" role="php" />
         <file name="run-phpunit.sh" role="php" />
+        <file name="setup-composer.sh" role="php" />
         <file name="setup-secure-shell.sh" role="php" />
         <file name="upload-code-coverage-html.sh" role="php" />
        </dir> <!-- /bundle/vendor/phpseclib/phpseclib/travis -->
@@ -173,6 +174,8 @@
        <file name=".travis.yml" role="php" />
        <file name="AUTHORS" role="php" />
        <file name="CHANGELOG.md" role="php" />
+       <file name="composer.json" role="php" />
+       <file name="composer.lock" role="php" />
        <file name="LICENSE" role="php" />
        <file name="phpunit.xml.dist" role="php" />
        <file name="README.md" role="php" />
@@ -301,6 +304,7 @@
        <file name=".gitignore" role="php" />
        <file name=".travis.yml" role="php" />
        <file name="AUTHORS" role="php" />
+       <file name="composer.json" role="php" />
        <file name="Doxyfile" role="php" />
        <file name="phpunit.xml" role="php" />
        <file name="README.md" role="php" />
@@ -492,6 +496,8 @@
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/.travis.yml" name="bundle/vendor/phpseclib/phpseclib/.travis.yml" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/AUTHORS" name="bundle/vendor/phpseclib/phpseclib/AUTHORS" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/CHANGELOG.md" name="bundle/vendor/phpseclib/phpseclib/CHANGELOG.md" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/composer.json" name="bundle/vendor/phpseclib/phpseclib/composer.json" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/composer.lock" name="bundle/vendor/phpseclib/phpseclib/composer.lock" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/LICENSE" name="bundle/vendor/phpseclib/phpseclib/LICENSE" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/phpunit.xml.dist" name="bundle/vendor/phpseclib/phpseclib/phpunit.xml.dist" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/README.md" name="bundle/vendor/phpseclib/phpseclib/README.md" />
@@ -569,11 +575,13 @@
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/code_coverage_id_rsa" name="bundle/vendor/phpseclib/phpseclib/travis/code_coverage_id_rsa" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/install-php-extensions.sh" name="bundle/vendor/phpseclib/phpseclib/travis/install-php-extensions.sh" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/run-phpunit.sh" name="bundle/vendor/phpseclib/phpseclib/travis/run-phpunit.sh" />
+   <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/setup-composer.sh" name="bundle/vendor/phpseclib/phpseclib/travis/setup-composer.sh" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/setup-secure-shell.sh" name="bundle/vendor/phpseclib/phpseclib/travis/setup-secure-shell.sh" />
    <install as="Horde/Pgp/vendor/phpseclib/phpseclib/travis/upload-code-coverage-html.sh" name="bundle/vendor/phpseclib/phpseclib/travis/upload-code-coverage-html.sh" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/.gitignore" name="bundle/vendor/singpolyma/openpgp-php/.gitignore" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/.travis.yml" name="bundle/vendor/singpolyma/openpgp-php/.travis.yml" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/AUTHORS" name="bundle/vendor/singpolyma/openpgp-php/AUTHORS" />
+   <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/composer.json" name="bundle/vendor/singpolyma/openpgp-php/composer.json" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/Doxyfile" name="bundle/vendor/singpolyma/openpgp-php/Doxyfile" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/phpunit.xml" name="bundle/vendor/singpolyma/openpgp-php/phpunit.xml" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/README.md" name="bundle/vendor/singpolyma/openpgp-php/README.md" />
