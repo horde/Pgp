@@ -10,7 +10,7 @@
   <email>slusarz@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2017-10-27</date>
+ <date>2017-10-30</date>
  <version>
   <release>1.0.0alpha1</release>
   <api>1.0.0</api>
@@ -319,6 +319,7 @@
    <dir name="doc">
     <dir name="Horde">
      <dir name="Pgp">
+      <file name="CHANGES" role="doc" />
       <file name="COPYING" role="doc" />
      </dir> <!-- /doc/Horde/Pgp -->
     </dir> <!-- /doc/Horde -->
@@ -697,6 +698,7 @@
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-dsa-sha384.txt.gpg" name="bundle/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-dsa-sha384.txt.gpg" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-dsa.gpg" name="bundle/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-dsa.gpg" />
    <install as="Horde/Pgp/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-rsa.gpg" name="bundle/vendor/singpolyma/openpgp-php/tests/data/uncompressed-ops-rsa.gpg" />
+   <install as="CHANGES" name="doc/Horde/Pgp/CHANGES" />
    <install as="COPYING" name="doc/Horde/Pgp/COPYING" />
    <install as="Horde/Pgp.php" name="lib/Horde/Pgp.php" />
    <install as="Horde/Pgp/Armor.php" name="lib/Horde/Pgp/Armor.php" />
