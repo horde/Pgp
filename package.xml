@@ -2,15 +2,15 @@
 <package packagerversion="1.9.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Horde_Pgp</name>
  <channel>pear.horde.org</channel>
- <summary>Horde PGP API</summary>
+ <summary>PGP library</summary>
  <description>Provides an API for dealing with OpenPGP (RFC 4880) data.</description>
  <lead>
   <name>Michael Slusarz</name>
   <user>slusarz</user>
   <email>slusarz@horde.org</email>
-  <active>yes</active>
+  <active>no</active>
  </lead>
- <date>2017-10-30</date>
+ <date>2017-11-14</date>
  <version>
   <release>1.0.0alpha1</release>
   <api>1.0.0</api>
@@ -394,7 +394,6 @@
       <file name="KeyserverTest.php" role="test" />
       <file name="KeyTest.php" role="test" />
       <file name="MimeTest.php" role="test" />
-      <file name="phpunit.xml" role="test" />
      </dir> <!-- /test/Horde/Pgp -->
     </dir> <!-- /test/Horde -->
    </dir> <!-- /test -->
@@ -726,7 +725,6 @@
    <install as="Horde/Pgp/KeyserverTest.php" name="test/Horde/Pgp/KeyserverTest.php" />
    <install as="Horde/Pgp/KeyTest.php" name="test/Horde/Pgp/KeyTest.php" />
    <install as="Horde/Pgp/MimeTest.php" name="test/Horde/Pgp/MimeTest.php" />
-   <install as="Horde/Pgp/phpunit.xml" name="test/Horde/Pgp/phpunit.xml" />
    <install as="Horde/Pgp/Backend/OpenpgpTest.php" name="test/Horde/Pgp/Backend/OpenpgpTest.php" />
    <install as="Horde/Pgp/Backend/TestBase.php" name="test/Horde/Pgp/Backend/TestBase.php" />
    <install as="Horde/Pgp/Element/MessageTest.php" name="test/Horde/Pgp/Element/MessageTest.php" />
@@ -751,5 +749,20 @@
    </filelist>
  </phprelease>
  <changelog>
+  <release>
+   <date>2017-11-14</date>
+   <version>
+    <release>1.0.0alpha1</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
+   <notes>
+* [jan] Mark PHP 7 as supported.
+   </notes>
+  </release>
  </changelog>
 </package>
