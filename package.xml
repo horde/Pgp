@@ -3,14 +3,14 @@
  <name>Horde_Pgp</name>
  <channel>pear.horde.org</channel>
  <summary>PGP library</summary>
- <description>Provides an API for dealing with OpenPGP (RFC 4880) data.</description>
+ <description>A library for dealing with OpenPGP (RFC 4880) data.</description>
  <lead>
   <name>Michael Slusarz</name>
   <user>slusarz</user>
   <email>slusarz@horde.org</email>
-  <active>yes</active>
+  <active>no</active>
  </lead>
- <date>2017-11-11</date>
+ <date>2021-07-04</date>
  <version>
   <release>1.0.0alpha1</release>
   <api>1.0.0</api>
@@ -21,7 +21,7 @@
  </stability>
  <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
  <notes>
-* [jan] Mark PHP 7 as supported.
+* [rla] Package for H6 / composer installer.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -404,74 +404,18 @@
  <dependencies>
   <required>
    <php>
-    <min>5.3.3</min>
+    <min>7.0.0</min>
     <max>8.0.0alpha1</max>
     <exclude>8.0.0alpha1</exclude>
    </php>
    <pearinstaller>
     <min>1.7.0</min>
    </pearinstaller>
-   <package>
-    <name>Horde_Exception</name>
-    <channel>pear.horde.org</channel>
-    <min>2.0.0</min>
-    <max>3.0.0alpha1</max>
-    <exclude>3.0.0alpha1</exclude>
-   </package>
-   <package>
-    <name>Horde_Http</name>
-    <channel>pear.horde.org</channel>
-    <min>2.0.0</min>
-    <max>3.0.0alpha1</max>
-    <exclude>3.0.0alpha1</exclude>
-   </package>
-   <package>
-    <name>Horde_Mime</name>
-    <channel>pear.horde.org</channel>
-    <min>2.8.0</min>
-    <max>3.0.0alpha1</max>
-    <exclude>3.0.0alpha1</exclude>
-   </package>
-   <package>
-    <name>Horde_Stream</name>
-    <channel>pear.horde.org</channel>
-    <min>1.5.0</min>
-    <max>2.0.0alpha1</max>
-    <exclude>2.0.0alpha1</exclude>
-   </package>
-   <package>
-    <name>Horde_Translation</name>
-    <channel>pear.horde.org</channel>
-    <min>2.2.0</min>
-    <max>3.0.0alpha1</max>
-    <exclude>3.0.0alpha1</exclude>
-   </package>
-   <package>
-    <name>Horde_Url</name>
-    <channel>pear.horde.org</channel>
-    <min>2.0.0</min>
-    <max>3.0.0alpha1</max>
-    <exclude>3.0.0alpha1</exclude>
-   </package>
-   <package>
-    <name>Horde_Util</name>
-    <channel>pear.horde.org</channel>
-    <min>2.0.0</min>
-    <max>3.0.0alpha1</max>
-    <exclude>3.0.0alpha1</exclude>
-   </package>
    <extension>
     <name>hash</name>
    </extension>
   </required>
   <optional>
-   <package>
-    <name>Horde_Test</name>
-    <channel>pear.horde.org</channel>
-    <min>2.1.0</min>
-    <max>3.0.0alpha1</max>
-    <exclude>3.0.0alpha1</exclude>
-   </package>
    <extension>
     <name>openssl</name>
    </extension>
@@ -752,7 +696,6 @@
  </phprelease>
  <changelog>
   <release>
-   <date>2017-11-11</date>
    <version>
     <release>1.0.0alpha1</release>
     <api>1.0.0</api>
@@ -761,9 +704,10 @@
     <release>alpha</release>
     <api>alpha</api>
    </stability>
+   <date>2021-07-04</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
-* [jan] Mark PHP 7 as supported.
+* [rla] Package for H6 / composer installer.
    </notes>
   </release>
  </changelog>
