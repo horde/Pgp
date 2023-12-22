@@ -14,30 +14,24 @@
     "version": "1.0.0alpha1",
     "time": "2017-11-14",
     "repositories": [
-        {
-            "type": "pear",
-            "url": "https://pear.horde.org"
-        }
     ],
     "require": {
         "php": "^5.3.3 || ^7",
-        "pear-pear.horde.org/Horde_Exception": "^2",
-        "pear-pear.horde.org/Horde_Http": "^2",
-        "pear-pear.horde.org/Horde_Mime": "^2.8",
-        "pear-pear.horde.org/Horde_Stream": "^1.5",
-        "pear-pear.horde.org/Horde_Translation": "^2.2",
-        "pear-pear.horde.org/Horde_Url": "^2",
-        "pear-pear.horde.org/Horde_Util": "^2",
+        "horde/exception": "^2",
+        "horde/http": "^2",
+        "horde/mime": "^2.8",
+        "horde/stream": "^1.5",
+        "horde/translation": "^2.2",
+        "horde/url": "^2",
+        "horde/util": "^2",
         "ext-hash": "*"
     },
     "suggest": {
-        "pear-pear.horde.org/Horde_Test": "^2.1",
+        "horde/test": "^2.1",
         "ext-openssl": "*",
         "ext-zlib": "*"
     },
     "replace": {
-        "pear-pear.horde.org/Horde_Pgp": "1.*",
-        "pear-horde/Horde_Pgp": "1.*"
     },
     "autoload": {
         "psr-0": {
