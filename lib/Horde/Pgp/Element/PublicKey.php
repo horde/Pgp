@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -20,8 +21,7 @@
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   Pgp
  */
-class Horde_Pgp_Element_PublicKey
-extends Horde_Pgp_Element_Key
+class Horde_Pgp_Element_PublicKey extends Horde_Pgp_Element_Key
 {
     /**
      */
@@ -46,7 +46,7 @@ extends Horde_Pgp_Element_Key
         $part->setType('application/pgp-keys');
         $part->setHeaderCharset('UTF-8');
         $part->setDescription(Horde_Pgp_Translation::t("PGP Public Key"));
-        $part->setContents(strval($this), array('encoding' => '7bit'));
+        $part->setContents(strval($this), ['encoding' => '7bit']);
 
         return $part;
     }

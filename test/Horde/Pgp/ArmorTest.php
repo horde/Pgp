@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -22,6 +23,7 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package    Pgp
  * @subpackage UnitTests
+ * @coversNothing
  */
 class Horde_Pgp_ParseTest extends PHPUnit_Framework_TestCase
 {
@@ -35,10 +37,10 @@ class Horde_Pgp_ParseTest extends PHPUnit_Framework_TestCase
         $stream = new Horde_Stream_Temp();
         $stream->add($data, true);
 
-        $obs = array(
+        $obs = [
             new Horde_Pgp_Armor($data),
-            new Horde_Pgp_Armor($stream)
-        );
+            new Horde_Pgp_Armor($stream),
+        ];
 
         foreach ($obs as $ob) {
             $this->assertEquals(
@@ -63,43 +65,43 @@ class Horde_Pgp_ParseTest extends PHPUnit_Framework_TestCase
 
     public function parsePgpDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'clear.txt',
-                array(),
-                array()
-            ),
-            array(
+                [],
+                [],
+            ],
+            [
                 'pgp_encrypted_symmetric.txt',
-                array('Horde_Pgp_Element_Message'),
-                array('Version' => 'GnuPG v1.4.5 (GNU/Linux)')
-            ),
-            array(
+                ['Horde_Pgp_Element_Message'],
+                ['Version' => 'GnuPG v1.4.5 (GNU/Linux)'],
+            ],
+            [
                 'pgp_encrypted.txt',
-                array('Horde_Pgp_Element_Message'),
-                array('Version' => 'GnuPG v1.4.5 (GNU/Linux)')
-            ),
-            array(
+                ['Horde_Pgp_Element_Message'],
+                ['Version' => 'GnuPG v1.4.5 (GNU/Linux)'],
+            ],
+            [
                 'pgp_private.asc',
-                array('Horde_Pgp_Element_PrivateKey'),
-                array('Version' => 'GnuPG v1.4.5 (GNU/Linux)')
-            ),
-            array(
+                ['Horde_Pgp_Element_PrivateKey'],
+                ['Version' => 'GnuPG v1.4.5 (GNU/Linux)'],
+            ],
+            [
                 'pgp_public.asc',
-                array('Horde_Pgp_Element_PublicKey'),
-                array('Version' => 'GnuPG v1.4.5 (GNU/Linux)')
-            ),
-            array(
+                ['Horde_Pgp_Element_PublicKey'],
+                ['Version' => 'GnuPG v1.4.5 (GNU/Linux)'],
+            ],
+            [
                 'pgp_signature.txt',
-                array('Horde_Pgp_Element_Signature'),
-                array('Version' => 'GnuPG v1.4.5 (GNU/Linux)')
-            ),
-            array(
+                ['Horde_Pgp_Element_Signature'],
+                ['Version' => 'GnuPG v1.4.5 (GNU/Linux)'],
+            ],
+            [
                 'pgp_signed.txt',
-                array('Horde_Pgp_Element_SignedMessage'),
-                array('Hash' => 'SHA1')
-            )
-        );
+                ['Horde_Pgp_Element_SignedMessage'],
+                ['Hash' => 'SHA1'],
+            ],
+        ];
     }
 
 }

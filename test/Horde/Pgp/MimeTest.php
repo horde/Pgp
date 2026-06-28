@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -22,6 +23,7 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package    Pgp
  * @subpackage UnitTests
+ * @coversNothing
  */
 class Horde_Pgp_MimeTest extends PHPUnit_Framework_TestCase
 {
@@ -74,10 +76,10 @@ class Horde_Pgp_MimeTest extends PHPUnit_Framework_TestCase
         );
 
         $result = $this->pgp_mime->verifyDetached(
-            $signed['1']->toString(array(
+            $signed['1']->toString([
                 'canonical' => true,
-                'headers' => true
-            )),
+                'headers' => true,
+            ]),
             $detach_sig->getContents(),
             $this->key->getPublicKey()
         );
@@ -95,9 +97,9 @@ class Horde_Pgp_MimeTest extends PHPUnit_Framework_TestCase
 
         $encrypted = $this->pgp_mime->encryptPart(
             $this->part,
-            array(
-                'pubkeys' => $this->key->getPublicKey()
-            )
+            [
+                'pubkeys' => $this->key->getPublicKey(),
+            ]
         );
 
         $this->_testEncryptPart($encrypted);
@@ -145,10 +147,10 @@ class Horde_Pgp_MimeTest extends PHPUnit_Framework_TestCase
         );
 
         $result = $this->pgp_mime->decrypt(
-            $data->toString(array(
+            $data->toString([
                 'canonical' => true,
-                'headers' => true
-            )),
+                'headers' => true,
+            ]),
             $this->key
         );
 
@@ -165,9 +167,9 @@ class Horde_Pgp_MimeTest extends PHPUnit_Framework_TestCase
         $result = $this->pgp_mime->signAndEncryptPart(
             $this->part,
             $this->key,
-            array(
-                'pubkeys' => $this->key->getPublicKey()
-            )
+            [
+                'pubkeys' => $this->key->getPublicKey(),
+            ]
         );
 
         $this->_testEncryptPart($result);
@@ -198,30 +200,30 @@ class Horde_Pgp_MimeTest extends PHPUnit_Framework_TestCase
 
     public function armorToPartProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'clear.txt',
-                null
-            ),
-            array(
+                null,
+            ],
+            [
                 'pgp_encrypted_rsa.txt',
-                array(
-                    'multipart/encrypted'
-                )
-            ),
-            array(
+                [
+                    'multipart/encrypted',
+                ],
+            ],
+            [
                 'pgp_public.asc',
-                array(
-                    'application/pgp-keys'
-                )
-            ),
-            array(
+                [
+                    'application/pgp-keys',
+                ],
+            ],
+            [
                 'pgp_signed2.txt',
-                array(
-                    'multipart/signed'
-                )
-            ),
-        );
+                [
+                    'multipart/signed',
+                ],
+            ],
+        ];
     }
 
     protected function _initData()

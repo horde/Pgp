@@ -6,8 +6,7 @@ description: A library for dealing with OpenPGP (RFC 4880) data.
 list: dev
 type: library
 authors:
-  -
-    name: Michael Slusarz
+  - name: Michael Slusarz
     user: slusarz
     email: slusarz@horde.org
     active: false
@@ -40,3 +39,36 @@ dependencies:
     ext:
       openssl: '*'
       zlib: '*'
+keywords: null
+vendor: horde
+ci-platform:
+  '8.0':
+    - php: ^7.4 || ^8
+    - ext-dom
+    - ext-hash
+  '8.1':
+    - php: ^7.4 || ^8
+    - ext-dom
+    - ext-hash
+  '8.2':
+    - php: ^7.4 || ^8
+    - ext-dom
+    - ext-hash
+  '8.3':
+    - php: ^7.4 || ^8
+    - ext-dom
+    - ext-hash
+  '8.4':
+    - php: ^7.4 || ^8
+    - ext-dom
+    - ext-hash
+  '8.5':
+    - php: ^7.4 || ^8
+    - ext-dom
+    - ext-hash
+  '8.6':
+    - php: ^7.4 || ^8
+    - ext-dom
+    - ext-hash
+ci-platform-flags:
+  needs_installer_plugin: false

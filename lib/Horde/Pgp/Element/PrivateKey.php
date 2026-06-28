@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -22,8 +23,7 @@
  *
  * @property boolean $encrypted  Returns true if the private key is encrypted.
  */
-class Horde_Pgp_Element_PrivateKey
-extends Horde_Pgp_Element_Key
+class Horde_Pgp_Element_PrivateKey extends Horde_Pgp_Element_Key
 {
     /**
      */
@@ -34,12 +34,12 @@ extends Horde_Pgp_Element_Key
     public function __get($name)
     {
         switch ($name) {
-        case 'encrypted':
-            $p = $this->_getSecretKeyPackets();
-            return (strlen(reset($p)->encrypted_data) > 0);
+            case 'encrypted':
+                $p = $this->_getSecretKeyPackets();
+                return (strlen(reset($p)->encrypted_data) > 0);
 
-        default:
-            return parent::__get($name);
+            default:
+                return parent::__get($name);
         }
     }
 
@@ -110,7 +110,7 @@ extends Horde_Pgp_Element_Key
      */
     protected function _getSecretKeyPackets()
     {
-        $out = array();
+        $out = [];
 
         foreach ($this->message as $key => $val) {
             if ($val instanceof OpenPGP_SecretKeyPacket) {

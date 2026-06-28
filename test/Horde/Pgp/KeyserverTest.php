@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -22,6 +23,7 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package    Pgp
  * @subpackage UnitTests
+ * @coversNothing
  */
 class Horde_Pgp_KeyserverTest extends Horde_Test_Case
 {
@@ -50,9 +52,9 @@ class Horde_Pgp_KeyserverTest extends Horde_Test_Case
 
     public function keyserverRetrieveProvider()
     {
-        return array(
-            array('4DE5B969')
-        );
+        return [
+            ['4DE5B969'],
+        ];
     }
 
     /**
@@ -76,9 +78,9 @@ class Horde_Pgp_KeyserverTest extends Horde_Test_Case
      */
     public function testBrokenKeyserver($email, $id)
     {
-        $ks = new Horde_Pgp_Keyserver(array(
-            'keyserver' => 'http://pgp.key-server.io:11371'
-        ));
+        $ks = new Horde_Pgp_Keyserver([
+            'keyserver' => 'http://pgp.key-server.io:11371',
+        ]);
         try {
             $this->_checkKey($ks->getKeyByEmail($email), $id);
         } catch (Horde_Pgp_Exception $e) {
@@ -92,9 +94,9 @@ class Horde_Pgp_KeyserverTest extends Horde_Test_Case
 
     public function keyserverRetrieveByEmailProvider()
     {
-        return array(
-            array('jan@horde.org', '4DE5B969')
-        );
+        return [
+            ['jan@horde.org', '4DE5B969'],
+        ];
     }
 
     protected function _checkKey($key, $id)

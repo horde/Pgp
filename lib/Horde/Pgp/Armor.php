@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2002-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2002-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -20,8 +21,7 @@
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   Pgp
  */
-class Horde_Pgp_Armor
-implements Countable, SeekableIterator
+class Horde_Pgp_Armor implements Countable, SeekableIterator
 {
     /**
      * Current element for iterator.
@@ -51,7 +51,7 @@ implements Countable, SeekableIterator
      *
      * @return Horde_Pgp_Armor  Armor object.
      */
-    static public function create($data)
+    public static function create($data)
     {
         return ($data instanceof Horde_Pgp_Armor)
             ? $data
@@ -104,16 +104,16 @@ implements Countable, SeekableIterator
     {
         $base64 = true;
         $class = $end = $end_armor = $ob_class = $start = null;
-        $headers = array();
+        $headers = [];
         $stream = $this->_data;
 
         while (!($eof = $stream->eof())) {
             $pos = $stream->pos();
             $val = rtrim($stream->getToChar("\n", !is_null($start)));
 
-            if (is_null($end_armor) &&
-                (strpos($val, '-----BEGIN PGP ') === 0) &&
-                (substr($val, -5) === '-----')) {
+            if (is_null($end_armor)
+                && (strpos($val, '-----BEGIN PGP ') === 0)
+                && (substr($val, -5) === '-----')) {
                 $armor = substr($val, 15, strpos($val, '-', 15) - 15);
                 if ($start) {
                     $stream->seek($pos, false);
@@ -121,38 +121,38 @@ implements Countable, SeekableIterator
                 }
 
                 switch ($armor) {
-                case 'MESSAGE':
-                    $class = 'Horde_Pgp_Element_Message';
-                    break;
+                    case 'MESSAGE':
+                        $class = 'Horde_Pgp_Element_Message';
+                        break;
 
-                case 'PUBLIC KEY BLOCK':
-                    $class = 'Horde_Pgp_Element_PublicKey';
-                    break;
+                    case 'PUBLIC KEY BLOCK':
+                        $class = 'Horde_Pgp_Element_PublicKey';
+                        break;
 
-                case 'PRIVATE KEY BLOCK':
-                    $class = 'Horde_Pgp_Element_PrivateKey';
-                    break;
+                    case 'PRIVATE KEY BLOCK':
+                        $class = 'Horde_Pgp_Element_PrivateKey';
+                        break;
 
-                case 'SIGNATURE':
-                    $class = 'Horde_Pgp_Element_Signature';
-                    break;
+                    case 'SIGNATURE':
+                        $class = 'Horde_Pgp_Element_Signature';
+                        break;
 
-                case 'SIGNED MESSAGE':
-                    $armor = 'SIGNATURE';
-                    $base64 = false;
-                    $class = 'Horde_Pgp_Element_SignedMessage';
-                    break;
+                    case 'SIGNED MESSAGE':
+                        $armor = 'SIGNATURE';
+                        $base64 = false;
+                        $class = 'Horde_Pgp_Element_SignedMessage';
+                        break;
 
-                default:
-                    /* Unknown: ignore. */
-                    continue 2;
+                    default:
+                        /* Unknown: ignore. */
+                        continue 2;
                 }
 
                 $end_armor = '-----END PGP ' . $armor . '-----';
             } elseif (!is_null($end_armor)) {
                 if (is_null($start)) {
                     if (strlen($val)) {
-                        list($h, $v) = explode(':', $val, 2);
+                        [$h, $v] = explode(':', $val, 2);
                         $headers[trim($h)] = trim($v);
                     } else {
                         $start = $stream->pos();

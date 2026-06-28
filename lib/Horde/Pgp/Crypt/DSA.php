@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -72,15 +73,15 @@ class Horde_Pgp_Crypt_DSA
     /**
      * Generate a number that lies between 0 and q-1.
      *
-     * @param \phpseclib\Math\BigInteger $q  Max number.
+     * @param BigInteger $q  Max number.
      *
-     * @return \phpseclib\Math\BigInteger  Generated number.
+     * @return BigInteger  Generated number.
      */
-    static public function randomNumber($q)
+    public static function randomNumber($q)
     {
         $bytes = strlen($q->toBytes()) + 8;
         $ints = ($bytes + 1) >> 2;
-        $cstring = Crypt\Random::String($ints);
+        $cstring = Random::String($ints);
 
         $random = '';
         for ($i = 0; $i < $ints; ++$i) {
@@ -112,9 +113,9 @@ class Horde_Pgp_Crypt_DSA
     /**
      * DSA keypair creation.
      *
-     * @param \phpseclib\Math\BigInteger $p  p
-     * @param \phpseclib\Math\BigInteger $q  q
-     * @param \phpseclib\Math\BigInteger $g  g
+     * @param BigInteger $p  p
+     * @param BigInteger $q  q
+     * @param BigInteger $g  g
      *
      * @return array  Keys:
      *   - x: (\phpseclib\Math\BigInteger) Private key.
@@ -125,7 +126,7 @@ class Horde_Pgp_Crypt_DSA
         $x = self::randomNumber($q);
         $y = $g->modPow($x, $p);
 
-        return array('x' => $x, 'y' => $y);
+        return ['x' => $x, 'y' => $y];
     }
 
     /**
@@ -176,7 +177,7 @@ class Horde_Pgp_Crypt_DSA
             }
         }
 
-        return array('r' => $r->toBytes(), 's' => $s->toBytes());
+        return ['r' => $r->toBytes(), 's' => $s->toBytes()];
     }
 
     /**
@@ -184,8 +185,8 @@ class Horde_Pgp_Crypt_DSA
      *
      * @param string $message            Message.
      * @param string $hash_alg           Hash algorithm.
-     * @param \phpseclib\Math\BigInteger $r  r.
-     * @param \phpseclib\Math\BigInteger $s  s.
+     * @param BigInteger $r  r.
+     * @param BigInteger $s  s.
      *
      * @return bool  True if verified.
      */

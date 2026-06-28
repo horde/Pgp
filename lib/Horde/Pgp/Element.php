@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -58,7 +59,7 @@ abstract class Horde_Pgp_Element
      *
      * @return Horde_Pgp_Element  PGP element object.
      */
-    static public function create($data)
+    public static function create($data)
     {
         $class = get_called_class();
         if ($data instanceof $class) {
@@ -81,7 +82,7 @@ abstract class Horde_Pgp_Element
      *                        OpenPGP_Message object.
      * @param array $headers  Header array.
      */
-    public function __construct($data, array $headers = array())
+    public function __construct($data, array $headers = [])
     {
         if (!($data instanceof OpenPGP_Message)) {
             Horde_Pgp_Backend_Openpgp::autoload();
@@ -105,9 +106,9 @@ abstract class Horde_Pgp_Element
         return OpenPGP::enarmor(
             $bytes,
             'PGP ' . $this->_armor,
-            array_merge($this->headers, array(
-                'Version' => $this->armorVersion
-            ))
+            array_merge($this->headers, [
+                'Version' => $this->armorVersion,
+            ])
         );
     }
 

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -20,11 +21,10 @@
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   Pgp
  */
-class Horde_Pgp_Mime
-extends Horde_Pgp
+class Horde_Pgp_Mime extends Horde_Pgp
 {
-    const PGP_ARMOR = 'pgp_armor';
-    const PGP_CHARSET = 'pgp_charset';
+    public const PGP_ARMOR = 'pgp_armor';
+    public const PGP_CHARSET = 'pgp_charset';
 
     /**
      * Signs a MIME part using PGP.
@@ -39,9 +39,10 @@ extends Horde_Pgp
      * @throws Horde_Pgp_Exception
      */
     public function signPart(
-        Horde_Mime_Part $part, $key, array $opts = array()
-    )
-    {
+        Horde_Mime_Part $part,
+        $key,
+        array $opts = []
+    ) {
         /* RFC 3156 Requirements for a PGP signed message:
          * + Content-Type params 'micalg' & 'protocol' are REQUIRED.
          * + The digitally signed message MUST be constrained to 7 bits.
@@ -52,17 +53,17 @@ extends Horde_Pgp
         /* Ensure that all text parts are Q-P encoded. */
         foreach ($part as $val) {
             if ($val->getPrimaryType() === 'text') {
-                $part->setTransferEncoding('quoted-printable', array(
-                    'send' => true                                                              ));
+                $part->setTransferEncoding('quoted-printable', [
+                    'send' => true                                                              ]);
             }
         }
 
         /* Get the signature. */
         $detach_sig = $this->signDetached(
-            $part->toString(array(
+            $part->toString([
                 'canonical' => true,
-                'headers' => true
-            )),
+                'headers' => true,
+            ]),
             $key,
             $opts
         );
@@ -91,7 +92,7 @@ extends Horde_Pgp
         );
         $sign->setContents(
             strval($detach_sig),
-            array('encoding' => '7bit')
+            ['encoding' => '7bit']
         );
 
         $base[] = $part;
@@ -125,13 +126,13 @@ extends Horde_Pgp
      * @return Horde_Mime_Part  An encrypted object.
      * @throws Horde_Pgp_Exception
      */
-    public function encryptPart(Horde_Mime_Part $part, array $opts = array())
+    public function encryptPart(Horde_Mime_Part $part, array $opts = [])
     {
         $base = $this->_encryptPart(
-            $part->toString(array(
+            $part->toString([
                 'canonical' => true,
-                'headers' => true
-            )),
+                'headers' => true,
+            ]),
             $opts
         );
         $base->setDescription(
@@ -193,13 +194,13 @@ extends Horde_Pgp
         $part1 = new Horde_Mime_Part();
         $part1->setType('application/pgp-encrypted');
         $part1->setCharset(null);
-        $part1->setContents("Version: 1\n", array('encoding' => '7bit'));
+        $part1->setContents("Version: 1\n", ['encoding' => '7bit']);
         $base[] = $part1;
 
         $part2 = new Horde_Mime_Part();
         $part2->setType('application/octet-stream');
         $part2->setCharset(null);
-        $part2->setContents(strval($encrypted), array('encoding' => '7bit'));
+        $part2->setContents(strval($encrypted), ['encoding' => '7bit']);
         $part2->setDisposition('inline');
         $base[] = $part2;
 
@@ -222,25 +223,26 @@ extends Horde_Pgp
      * @throws Horde_Pgp_Exception
      */
     public function signAndEncryptPart(
-        Horde_Mime_Part $part, $privkey, array $opts = array()
-    )
-    {
+        Horde_Mime_Part $part,
+        $privkey,
+        array $opts = []
+    ) {
         /* We use the combined method of sign & encryption in a single
          * OpenPGP packet (RFC 3156 [6.2]). */
         $signed = $this->sign(
-            $part->toString(array(
+            $part->toString([
                 'canonical' => true,
-                'headers' => true
-            )),
+                'headers' => true,
+            ]),
             $privkey,
             $opts
         );
 
         $base = $this->_encryptPart(
             $signed->message,
-            array_merge($opts, array(
-                'compress' => 'NONE'
-            ))
+            array_merge($opts, [
+                'compress' => 'NONE',
+            ])
         );
         $base->setDescription(
             Horde_Pgp_Translation::t("PGP Signed/Encrypted Data")
@@ -268,7 +270,7 @@ extends Horde_Pgp
         $part->setType('application/pgp-keys');
         $part->setHeaderCharset('UTF-8');
         $part->setDescription(Horde_Crypt_Translation::t("PGP Public Key"));
-        $part->setContents(strval($key), array('encoding' => '7bit'));
+        $part->setContents(strval($key), ['encoding' => '7bit']);
 
         return $part;
     }
@@ -283,11 +285,11 @@ extends Horde_Pgp
      * @return mixed  Either null if no PGP data was found, or a
      *                Horde_Mime_Part object.
      */
-    public function armorToPart($input, array $opts = array())
+    public function armorToPart($input, array $opts = [])
     {
-        $opts = array_merge(array(
-            'charset' => 'UTF-8'
-        ), $opts);
+        $opts = array_merge([
+            'charset' => 'UTF-8',
+        ], $opts);
 
         $armor = Horde_Pgp_Armor::create($input);
 
@@ -296,39 +298,38 @@ extends Horde_Pgp
 
         foreach ($armor as $val) {
             switch (get_class($val)) {
-            case 'Horde_Pgp_Element_Text':
-                $part = new Horde_Mime_Part();
-                $part->setType('text/plain');
-                $part->setCharset($opts['charset']);
-                $part->setContents($val->message[0]->data);
-                $new_part[] = $part;
-                break;
+                case 'Horde_Pgp_Element_Text':
+                    $part = new Horde_Mime_Part();
+                    $part->setType('text/plain');
+                    $part->setCharset($opts['charset']);
+                    $part->setContents($val->message[0]->data);
+                    $new_part[] = $part;
+                    break;
 
-            case 'Horde_Pgp_Element_PrivateKey':
-            case 'Horde_Pgp_Element_PublicKey':
-                $part = new Horde_Mime_Part();
-                $part->setType('application/pgp-keys');
-                $part->setContents(strval($val));
-                $new_part[] = $part;
-                break;
+                case 'Horde_Pgp_Element_PrivateKey':
+                case 'Horde_Pgp_Element_PublicKey':
+                    $part = new Horde_Mime_Part();
+                    $part->setType('application/pgp-keys');
+                    $part->setContents(strval($val));
+                    $new_part[] = $part;
+                    break;
 
-            case 'Horde_Pgp_Element_Message':
-                // TODO: Message can also be text or signature
-                $part = $this->_encryptBase($val);
-                $part->setMetadata(self::PGP_ARMOR, true);
-                $part['2']->setMetadata(
-                    self::PGP_CHARSET,
-                    isset($val->headers['Charset'])
-                        ? $val->headers['Charset']
-                        : 'UTF-8'
-                );
-                $new_part[] = $part;
-                break;
+                case 'Horde_Pgp_Element_Message':
+                    // TODO: Message can also be text or signature
+                    $part = $this->_encryptBase($val);
+                    $part->setMetadata(self::PGP_ARMOR, true);
+                    $part['2']->setMetadata(
+                        self::PGP_CHARSET,
+                        $val->headers['Charset']
+                            ?? 'UTF-8'
+                    );
+                    $new_part[] = $part;
+                    break;
 
-            case 'Horde_Pgp_Element_SignedMessage':
-                $part = $this->_signPart($val->text, $val->signature);
-                $new_part[] = $part;
-                break;
+                case 'Horde_Pgp_Element_SignedMessage':
+                    $part = $this->_signPart($val->text, $val->signature);
+                    $new_part[] = $part;
+                    break;
             }
         }
 

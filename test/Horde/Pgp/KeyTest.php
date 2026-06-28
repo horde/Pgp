@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -22,6 +23,7 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package    Pgp
  * @subpackage UnitTests
+ * @coversNothing
  */
 class Horde_Pgp_KeyTest extends PHPUnit_Framework_TestCase
 {
@@ -58,69 +60,69 @@ class Horde_Pgp_KeyTest extends PHPUnit_Framework_TestCase
 
     public function getSignKeysProvider()
     {
-        return array(
-            array(
-                array(
-                    array(
+        return [
+            [
+                [
+                    [
                         'created' => new DateTime('@1155291888'),
                         'fingerprint' => '966F4BA9569DE6F65E8253977CA74426BADEABD7',
-                        'id' => 'BADEABD7'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_public.asc', 'public')
-            ),
-            array(
-                array(
-                    array(
+                        'id' => 'BADEABD7',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_public.asc', 'public'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1155291888'),
                         'fingerprint' => '966F4BA9569DE6F65E8253977CA74426BADEABD7',
-                        'id' => 'BADEABD7'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_private.asc', 'private')
-            ),
-            array(
-                array(
-                    array(
+                        'id' => 'BADEABD7',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_private.asc', 'private'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1428808030'),
                         'fingerprint' => 'C2F1B25DED428057096161322CA37A36F78F30D6',
-                        'id' => 'F78F30D6'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_public_rsa.txt', 'public')
-            ),
-            array(
-                array(
-                    array(
+                        'id' => 'F78F30D6',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_public_rsa.txt', 'public'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1428808030'),
                         'fingerprint' => 'C2F1B25DED428057096161322CA37A36F78F30D6',
-                        'id' => 'F78F30D6'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_private_rsa.txt', 'private')
-            ),
-            array(
-                array(
-                    array(
+                        'id' => 'F78F30D6',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_private_rsa.txt', 'private'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1429507010'),
                         'fingerprint' => 'DA355005A28A8EA3A854FAFB9164CFA4CCA699C0',
-                        'id' => 'CCA699C0'
-                    )
-                ),
-                array(
-                    array(
+                        'id' => 'CCA699C0',
+                    ],
+                ],
+                [
+                    [
                         'created' => new DateTime('@1429507152'),
                         'info' => 'Revocation of entire key',
-                        'reason' => Horde_Pgp_Element_Key::REVOKE_RETIRED
-                    )
-                ),
-                $this->_getKey('pgp_public_revoked.txt', 'public')
-            ),
-        );
+                        'reason' => Horde_Pgp_Element_Key::REVOKE_RETIRED,
+                    ],
+                ],
+                $this->_getKey('pgp_public_revoked.txt', 'public'),
+            ],
+        ];
     }
 
     /**
@@ -160,72 +162,72 @@ class Horde_Pgp_KeyTest extends PHPUnit_Framework_TestCase
 
     public function getUserIdsProvider()
     {
-        return array(
-            array(
-                array(
-                    array(
+        return [
+            [
+                [
+                    [
                         'comment' => 'My Comment',
                         'created' => new DateTime('@1155291888'),
-                        'email' => 'My Name <me@example.com>'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_public.asc', 'public')
-            ),
-            array(
-                array(
-                    array(
+                        'email' => 'My Name <me@example.com>',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_public.asc', 'public'),
+            ],
+            [
+                [
+                    [
                         'comment' => 'My Comment',
                         'created' => new DateTime('@1155291888'),
-                        'email' => 'My Name <me@example.com>'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_private.asc', 'private')
-            ),
-            array(
-                array(
-                    array(
+                        'email' => 'My Name <me@example.com>',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_private.asc', 'private'),
+            ],
+            [
+                [
+                    [
                         'comment' => 'RSA',
                         'created' => new DateTime('@1428808030'),
-                        'email' => 'Test User <test@example.com>'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_public_rsa.txt', 'public')
-            ),
-            array(
-                array(
-                    array(
+                        'email' => 'Test User <test@example.com>',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_public_rsa.txt', 'public'),
+            ],
+            [
+                [
+                    [
                         'comment' => 'RSA',
                         'created' => new DateTime('@1428808030'),
-                        'email' => 'Test User <test@example.com>'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_private_rsa.txt', 'private')
-            ),
-            array(
-                array(
-                    array(
+                        'email' => 'Test User <test@example.com>',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_private_rsa.txt', 'private'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1430266814'),
-                        'email' => 'Test User <test@example.com>'
-                    ),
-                    array(
+                        'email' => 'Test User <test@example.com>',
+                    ],
+                    [
                         'created' => new DateTime('@1430266886'),
-                        'email' => 'Test User 2 <test2@example.com>'
-                    )
-                ),
-                array(
+                        'email' => 'Test User 2 <test2@example.com>',
+                    ],
+                ],
+                [
                     null,
-                    array(
+                    [
                         'created' => new DateTime('@1430266952'),
-                        'reason' => Horde_Pgp_Element_Key::REVOKE_NOTUSED
-                    )
-                ),
-                $this->_getKey('pgp_public_revokeduid.txt', 'public')
-            )
-        );
+                        'reason' => Horde_Pgp_Element_Key::REVOKE_NOTUSED,
+                    ],
+                ],
+                $this->_getKey('pgp_public_revokeduid.txt', 'public'),
+            ],
+        ];
     }
 
     /**
@@ -241,44 +243,44 @@ class Horde_Pgp_KeyTest extends PHPUnit_Framework_TestCase
 
     public function getFingerprintsProvider()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     /* Key */
                     'BADEABD7' => '966F4BA9569DE6F65E8253977CA74426BADEABD7',
                     /* Subkey */
-                    '9EF074A9' => 'F4248B3AC97C1F749555929C24ED29779EF074A9'
-                ),
-                $this->_getKey('pgp_public.asc', 'public')
-            ),
-            array(
-                array(
+                    '9EF074A9' => 'F4248B3AC97C1F749555929C24ED29779EF074A9',
+                ],
+                $this->_getKey('pgp_public.asc', 'public'),
+            ],
+            [
+                [
                     /* Key */
                     'BADEABD7' => '966F4BA9569DE6F65E8253977CA74426BADEABD7',
                     /* Subkey */
-                    '9EF074A9' => 'F4248B3AC97C1F749555929C24ED29779EF074A9'
-                ),
-                $this->_getKey('pgp_private.asc', 'private')
-            ),
-            array(
-                array(
+                    '9EF074A9' => 'F4248B3AC97C1F749555929C24ED29779EF074A9',
+                ],
+                $this->_getKey('pgp_private.asc', 'private'),
+            ],
+            [
+                [
                     /* Key */
                     'F78F30D6' => 'C2F1B25DED428057096161322CA37A36F78F30D6',
                     /* Subkey */
-                    '5302C294' => '063A32E02D9B279D93E82068E03B24D55302C294'
-                ),
-                $this->_getKey('pgp_public_rsa.txt', 'public')
-            ),
-            array(
-                array(
+                    '5302C294' => '063A32E02D9B279D93E82068E03B24D55302C294',
+                ],
+                $this->_getKey('pgp_public_rsa.txt', 'public'),
+            ],
+            [
+                [
                     /* Key */
                     'F78F30D6' => 'C2F1B25DED428057096161322CA37A36F78F30D6',
                     /* Subkey */
-                    '5302C294' => '063A32E02D9B279D93E82068E03B24D55302C294'
-                ),
-                $this->_getKey('pgp_private_rsa.txt', 'private')
-            )
-        );
+                    '5302C294' => '063A32E02D9B279D93E82068E03B24D55302C294',
+                ],
+                $this->_getKey('pgp_private_rsa.txt', 'private'),
+            ],
+        ];
     }
 
     /**
@@ -295,48 +297,48 @@ class Horde_Pgp_KeyTest extends PHPUnit_Framework_TestCase
 
     public function containsEmailProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'me@example.com',
                 $this->_getKey('pgp_public.asc', 'public'),
-                true
-            ),
-            array(
+                true,
+            ],
+            [
                 'foo@example.com',
                 $this->_getKey('pgp_public.asc', 'public'),
-                false
-            ),
-            array(
+                false,
+            ],
+            [
                 'me@example.com',
                 $this->_getKey('pgp_private.asc', 'private'),
-                true
-            ),
-            array(
+                true,
+            ],
+            [
                 'foo@example.com',
                 $this->_getKey('pgp_private.asc', 'private'),
-                false
-            ),
-            array(
+                false,
+            ],
+            [
                 'test@example.com',
                 $this->_getKey('pgp_public_rsa.txt', 'public'),
-                true
-            ),
-            array(
+                true,
+            ],
+            [
                 'foo@example.com',
                 $this->_getKey('pgp_public_rsa.txt', 'public'),
-                false
-            ),
-            array(
+                false,
+            ],
+            [
                 'test@example.com',
                 $this->_getKey('pgp_private_rsa.txt', 'private'),
-                true
-            ),
-            array(
+                true,
+            ],
+            [
                 'foo@example.com',
                 $this->_getKey('pgp_private_rsa.txt', 'private'),
-                false
-            )
-        );
+                false,
+            ],
+        ];
     }
 
     public function testCreateMimePart()
@@ -390,86 +392,86 @@ class Horde_Pgp_KeyTest extends PHPUnit_Framework_TestCase
 
     public function getEncryptKeysProvider()
     {
-        return array(
-            array(
-                array(
-                    array(
+        return [
+            [
+                [
+                    [
                         'created' => new DateTime('@1155291888'),
                         'fingerprint' => 'F4248B3AC97C1F749555929C24ED29779EF074A9',
-                        'id' => '9EF074A9'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_public.asc', 'public')
-            ),
-            array(
-                array(
-                    array(
+                        'id' => '9EF074A9',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_public.asc', 'public'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1155291888'),
                         'fingerprint' => 'F4248B3AC97C1F749555929C24ED29779EF074A9',
-                        'id' => '9EF074A9'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_private.asc', 'private')
-            ),
-            array(
-                array(
-                    array(
+                        'id' => '9EF074A9',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_private.asc', 'private'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1428808030'),
                         'fingerprint' => '063A32E02D9B279D93E82068E03B24D55302C294',
-                        'id' => '5302C294'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_public_rsa.txt', 'public')
-            ),
-            array(
-                array(
-                    array(
+                        'id' => '5302C294',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_public_rsa.txt', 'public'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1428808030'),
                         'fingerprint' => '063A32E02D9B279D93E82068E03B24D55302C294',
-                        'id' => '5302C294'
-                    )
-                ),
-                array(),
-                $this->_getKey('pgp_private_rsa.txt', 'private')
-            ),
-            array(
-                array(
-                    array(
+                        'id' => '5302C294',
+                    ],
+                ],
+                [],
+                $this->_getKey('pgp_private_rsa.txt', 'private'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1429507010'),
                         'fingerprint' => '2434ACB027C2F7126D2B8F438668D5A0B68E9C8A',
-                        'id' => 'B68E9C8A'
-                    )
-                ),
-                array(
-                    array(
+                        'id' => 'B68E9C8A',
+                    ],
+                ],
+                [
+                    [
                         'created' => new DateTime('@1429507152'),
                         'info' => 'Revocation of entire key',
-                        'reason' => Horde_Pgp_Element_Key::REVOKE_RETIRED
-                    )
-                ),
-                $this->_getKey('pgp_public_revoked.txt', 'public')
-            ),
-            array(
-                array(
-                    array(
+                        'reason' => Horde_Pgp_Element_Key::REVOKE_RETIRED,
+                    ],
+                ],
+                $this->_getKey('pgp_public_revoked.txt', 'public'),
+            ],
+            [
+                [
+                    [
                         'created' => new DateTime('@1429508578'),
                         'fingerprint' => '1C45DD1BDD24858740430E6354C42551FF701578',
-                        'id' => 'FF701578'
-                    )
-                ),
-                array(
-                    array(
+                        'id' => 'FF701578',
+                    ],
+                ],
+                [
+                    [
                         'created' => new DateTime('@1429508659'),
                         'info' => 'Revocation of subkey',
-                        'reason' => Horde_Pgp_Element_Key::REVOKE_RETIRED
-                    )
-                ),
-                $this->_getKey('pgp_public_revokedsub.txt', 'public')
-            )
-        );
+                        'reason' => Horde_Pgp_Element_Key::REVOKE_RETIRED,
+                    ],
+                ],
+                $this->_getKey('pgp_public_revokedsub.txt', 'public'),
+            ],
+        ];
     }
 
     /**
@@ -501,28 +503,28 @@ class Horde_Pgp_KeyTest extends PHPUnit_Framework_TestCase
 
     public function unencryptKeyProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 $this->_getKey('pgp_private.asc', 'private'),
                 'Invalid Passphrase',
-                false
-            ),
-            array(
+                false,
+            ],
+            [
                 $this->_getKey('pgp_private.asc', 'private'),
                 'Secret',
-                true
-            ),
-            array(
+                true,
+            ],
+            [
                 $this->_getKey('pgp_private_rsa.txt', 'private'),
                 'Invalid Passphrase',
-                false
-            ),
-            array(
+                false,
+            ],
+            [
                 $this->_getKey('pgp_private_rsa.txt', 'private'),
                 'Secret',
-                true
-            )
-        );
+                true,
+            ],
+        ];
     }
 
     protected function _getKey($key, $type)

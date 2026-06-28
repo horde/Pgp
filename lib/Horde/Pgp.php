@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2002-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2002-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -28,7 +29,7 @@ class Horde_Pgp
      *
      * @var array
      */
-    protected $_backends = array();
+    protected $_backends = [];
 
     /**
      * Configuration parameters.
@@ -44,7 +45,7 @@ class Horde_Pgp
      *   - backends: (array) The explicit list of backend drivers
      *               (Horde_Pgp_Backend objects) to use.
      */
-    public function __construct(array $params = array())
+    public function __construct(array $params = [])
     {
         $this->_params = $params;
     }
@@ -64,24 +65,24 @@ class Horde_Pgp
      * @return Horde_Pgp_Key_Private  The generated private key.
      * @throws Horde_Pgp_Exception
      */
-    public function generateKey($name, $email, array $opts = array())
+    public function generateKey($name, $email, array $opts = [])
     {
         $this->_initDrivers();
 
-        $opts = array_merge(array(
+        $opts = array_merge([
             'comment' => '',
             'expire' => null,
             'hash' => 'SHA256',
             'keylength' => 2048,
-            'passphrase' => null
-        ), $opts, array(
+            'passphrase' => null,
+        ], $opts, [
             'email' => $email,
-            'name' => $name
-        ));
+            'name' => $name,
+        ]);
 
         return $this->_runInBackend(
             'generateKey',
-            array($opts),
+            [$opts],
             Horde_Pgp_Translation::t("PGP key not generated successfully.")
         );
     }
@@ -100,22 +101,22 @@ class Horde_Pgp
      * @return Horde_Pgp_Element_Message  The encrypted data.
      * @throws Horde_Pgp_Exception
      */
-    public function encrypt($text, $keys, array $opts = array())
+    public function encrypt($text, $keys, array $opts = [])
     {
         return $this->_runInBackend(
             'encrypt',
-            array(
+            [
                 $text,
                 array_map(
-                    array('Horde_Pgp_Element_PublicKey', 'create'),
-                    is_array($keys) ? $keys : array($keys)
+                    ['Horde_Pgp_Element_PublicKey', 'create'],
+                    is_array($keys) ? $keys : [$keys]
                 ),
                 array_merge(
                     $opts,
                     $this->_getCompression($opts, 'ZIP'),
                     $this->_getCipher($opts, 'AES128')
-                )
-            ),
+                ),
+            ],
             Horde_Pgp_Translation::t("Could not PGP encrypt data.")
         );
     }
@@ -134,7 +135,7 @@ class Horde_Pgp
      * @return Horde_Pgp_Element_Message  The encrypted data.
      * @throws Horde_Pgp_Exception
      */
-    public function encryptSymmetric($text, $passphrase, array $opts = array())
+    public function encryptSymmetric($text, $passphrase, array $opts = [])
     {
         /* For maximum interoperability, use 3DES to encode symmetric data
          * since, without public key information. we don't know what the
@@ -142,15 +143,15 @@ class Horde_Pgp
          * symmetric algorithm in RFC 4880. */
         return $this->_runInBackend(
             'encryptSymmetric',
-            array(
+            [
                 $text,
-                is_array($passphrase) ? $passphrase : array($passphrase),
+                is_array($passphrase) ? $passphrase : [$passphrase],
                 array_merge(
                     $opts,
                     $this->_getCompression($opts, 'ZIP'),
                     $this->_getCipher($opts, '3DES')
-                )
-            ),
+                ),
+            ],
             Horde_Pgp_Translation::t("Could not PGP encrypt data.")
         );
     }
@@ -172,20 +173,20 @@ class Horde_Pgp
      * @return Horde_Pgp_Element_Message  The signed data.
      * @throws Horde_Pgp_Exception
      */
-    public function sign($text, $key, array $opts = array())
+    public function sign($text, $key, array $opts = [])
     {
         return $this->_runInBackend(
             'sign',
-            array(
+            [
                 $text,
                 $this->_getPrivateKey($key),
                 'message',
                 array_merge(
-                    array('sign_hash' => null),
+                    ['sign_hash' => null],
                     $opts,
                     $this->_getCompression($opts, 'ZIP')
-                )
-            ),
+                ),
+            ],
             Horde_Pgp_Translation::t("Could not PGP sign data.")
         );
     }
@@ -202,18 +203,18 @@ class Horde_Pgp
      * @return Horde_Pgp_Element_SignedMessage  The signed data.
      * @throws Horde_Pgp_Exception
      */
-    public function signCleartext($text, $key, array $opts = array())
+    public function signCleartext($text, $key, array $opts = [])
     {
         return $this->_runInBackend(
             'sign',
-            array(
+            [
                 $text,
                 $this->_getPrivateKey($key),
                 'clear',
-                array_merge(array(
-                    'sign_hash' => null
-                ), $opts)
-            ),
+                array_merge([
+                    'sign_hash' => null,
+                ], $opts),
+            ],
             Horde_Pgp_Translation::t("Could not PGP sign data.")
         );
     }
@@ -230,18 +231,18 @@ class Horde_Pgp
      * @return Horde_Pgp_Element_Signature  The detached signature.
      * @throws Horde_Pgp_Exception
      */
-    public function signDetached($text, $key, array $opts = array())
+    public function signDetached($text, $key, array $opts = [])
     {
         return $this->_runInBackend(
             'sign',
-            array(
+            [
                 $text,
                 $this->_getPrivateKey($key),
                 'detach',
-                array_merge(array(
-                    'sign_hash' => null
-                ), $opts)
-            ),
+                array_merge([
+                    'sign_hash' => null,
+                ], $opts),
+            ],
             Horde_Pgp_Translation::t("Could not PGP sign data.")
         );
     }
@@ -260,10 +261,10 @@ class Horde_Pgp
     {
         return $this->_runInBackend(
             'decrypt',
-            array(
+            [
                 Horde_Pgp_Element_Message::create($text),
-                $this->_getPrivateKey($key)
-            ),
+                $this->_getPrivateKey($key),
+            ],
             Horde_Pgp_Translation::t("Could not decrypt PGP data.")
         );
     }
@@ -286,10 +287,10 @@ class Horde_Pgp
     {
         return $this->_runInBackend(
             'decryptSymmetric',
-            array(
+            [
                 Horde_Pgp_Element_Message::create($text),
-                $passphrase
-            ),
+                $passphrase,
+            ],
             Horde_Pgp_Translation::t("Could not decrypt PGP data.")
         );
     }
@@ -328,8 +329,8 @@ class Horde_Pgp
             } else {
                 $armor = new Horde_Pgp_Armor($text);
                 foreach ($armor as $val) {
-                    if (($val instanceof Horde_Pgp_Element_Message) ||
-                        ($val instanceof Horde_Pgp_Element_SignedMessage)) {
+                    if (($val instanceof Horde_Pgp_Element_Message)
+                        || ($val instanceof Horde_Pgp_Element_SignedMessage)) {
                         $data = $val;
                         break;
                     }
@@ -338,21 +339,21 @@ class Horde_Pgp
         } else {
             $sig = Horde_Pgp_Element_Signature::create($sig);
             $data = new Horde_Pgp_Element_SignedMessage(
-                new OpenPGP_Message(array(
+                new OpenPGP_Message([
                     new OpenPGP_LiteralDataPacket(
                         $text,
-                        array(
-                            'format' => ($sig->message[0]->signature_type === 0x00) ? 'b' : 't'
-                        )
+                        [
+                            'format' => ($sig->message[0]->signature_type === 0x00) ? 'b' : 't',
+                        ]
                     ),
-                    $sig->message[0]
-                ))
+                    $sig->message[0],
+                ])
             );
         }
 
         return $this->_runInBackend(
             'verify',
-            array($data, Horde_Pgp_Element_PublicKey::create($key)),
+            [$data, Horde_Pgp_Element_PublicKey::create($key)],
             Horde_Pgp_Translation::t("Could not verify PGP data.")
         );
     }
@@ -382,8 +383,9 @@ class Horde_Pgp
 
         foreach ($this->_backends as $val) {
             try {
-                return call_user_func_array(array($val, $cmd), $args);
-            } catch (Exception $e) {}
+                return call_user_func_array([$val, $cmd], $args);
+            } catch (Exception $e) {
+            }
         }
 
         throw new Horde_Pgp_Exception($error);
@@ -409,14 +411,14 @@ class Horde_Pgp
     protected function _getCipher($opts, $default)
     {
         /* RFC 4880 [9.2] */
-        return $this->_getOption($opts, $default, 'cipher', array(
+        return $this->_getOption($opts, $default, 'cipher', [
             '3DES' => 2,
             'CAST5' => 3,
             'AES128' => 7,
             'AES192' => 8,
             'AES256' => 9,
-            'Twofish' => 10
-        ));
+            'Twofish' => 10,
+        ]);
     }
 
     /**
@@ -425,11 +427,11 @@ class Horde_Pgp
     protected function _getCompression($opts, $default)
     {
         /* RFC 4880 [9.3] */
-        return $this->_getOption($opts, $default, 'compress', array(
+        return $this->_getOption($opts, $default, 'compress', [
             'NONE' => 0,
             'ZIP' => 1,
-            'ZLIB' => 2
-        ));
+            'ZLIB' => 2,
+        ]);
     }
 
     /**
@@ -437,15 +439,14 @@ class Horde_Pgp
      */
     protected function _getOption($opts, $default, $name, $map)
     {
-        $val = isset($opts[$name])
-            ? $opts[$name]
-            : $default;
+        $val = $opts[$name]
+            ?? $default;
 
         if (is_string($val)) {
             $val = $map[$val];
         }
 
-        return array($name => $val);
+        return [$name => $val];
     }
 
 

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -23,15 +24,14 @@
  * @property-read string $fingerprint  Fingerprint of the base key.
  * @property-read string $id  ID of the base key.
  */
-abstract class Horde_Pgp_Element_Key
-extends Horde_Pgp_Element
+abstract class Horde_Pgp_Element_Key extends Horde_Pgp_Element
 {
     /** Revocation reasons. */
-    const REVOKE_UNKNOWN = 0;
-    const REVOKE_SUPERSEDED = 1;
-    const REVOKE_COMPROMISED = 2;
-    const REVOKE_RETIRED = 3;
-    const REVOKE_NOTUSED = 4;
+    public const REVOKE_UNKNOWN = 0;
+    public const REVOKE_SUPERSEDED = 1;
+    public const REVOKE_COMPROMISED = 2;
+    public const REVOKE_RETIRED = 3;
+    public const REVOKE_NOTUSED = 4;
 
     /**
      * Cached data.
@@ -45,10 +45,10 @@ extends Horde_Pgp_Element
     public function __get($name)
     {
         switch ($name) {
-        case 'fingerprint':
-        case 'id':
-            $base = $this->getSignKeys();
-            return $base[0]->$name;
+            case 'fingerprint':
+            case 'id':
+                $base = $this->getSignKeys();
+                return $base[0]->$name;
         }
     }
 
@@ -60,7 +60,7 @@ extends Horde_Pgp_Element
     public function getFingerprints()
     {
         $keys = array_merge($this->getSignKeys(), $this->getEncryptKeys());
-        $out = array();
+        $out = [];
 
         foreach ($keys as $val) {
             $out[$val->id] = $val->fingerprint;
@@ -162,16 +162,16 @@ extends Horde_Pgp_Element
             return;
         }
 
-        $this->_cache = array(
-            'encrypt' => array(),
-            'userid' => array()
-        );
+        $this->_cache = [
+            'encrypt' => [],
+            'userid' => [],
+        ];
 
         $fallback = $p = $topkey = $userid = $userid_p = null;
         $sub = false;
 
         $create_out = function ($p, $s) {
-            $out = new stdClass;
+            $out = new stdClass();
             $out->key = $p;
             $out->sig = $s;
             return $out;
@@ -185,7 +185,7 @@ extends Horde_Pgp_Element
         foreach ($this->message as $val) {
             if ($val instanceof OpenPGP_PublicKeyPacket) {
                 if (is_null($topkey)) {
-                    $topkey = new stdClass;
+                    $topkey = new stdClass();
                     $topkey->created = new DateTime('@' . $val->timestamp);
                     $topkey->fingerprint = $val->fingerprint;
                     $topkey->id = $val->key_id;
@@ -199,7 +199,7 @@ extends Horde_Pgp_Element
                     $this->_cache['userid'][] = $userid;
                 }
 
-                $userid = new stdClass;
+                $userid = new stdClass();
                 $userid->email = new Horde_Mail_Rfc822_Address($val->email);
                 $userid->email->personal = $val->name;
                 $userid->comment = $val->comment;
@@ -208,93 +208,93 @@ extends Horde_Pgp_Element
             } elseif ($val instanceof OpenPGP_SignaturePacket) {
                 /* Signature types: RFC 4880 [5.2.1] */
                 switch ($val->signature_type) {
-                case 0x10:
-                case 0x11:
-                case 0x12:
-                case 0x13:
-                    /* Certification of User ID. */
-                    if ($topkey &&
-                        $userid_p &&
-                        $this->_parseVerify($topkey->key, $userid_p, $val)) {
-                        $userid->key = $topkey->key;
-                        $userid->created = $this->_parseCreation($val);
-                        $userid->sig = $val;
-                    } else {
-                        $userid_p = null;
-                    }
-                    break;
+                    case 0x10:
+                    case 0x11:
+                    case 0x12:
+                    case 0x13:
+                        /* Certification of User ID. */
+                        if ($topkey
+                            && $userid_p
+                            && $this->_parseVerify($topkey->key, $userid_p, $val)) {
+                            $userid->key = $topkey->key;
+                            $userid->created = $this->_parseCreation($val);
+                            $userid->sig = $val;
+                        } else {
+                            $userid_p = null;
+                        }
+                        break;
 
-                case 0x18:
-                    /* Verify first. */
-                    if (!$p ||
-                        (($topkey->key !== $p) &&
-                         !$this->_parseVerify($topkey->key, $p, $val))) {
-                        continue;
-                    }
+                    case 0x18:
+                        /* Verify first. */
+                        if (!$p
+                            || (($topkey->key !== $p)
+                             && !$this->_parseVerify($topkey->key, $p, $val))) {
+                            continue;
+                        }
 
-                    $encrypt = new stdClass;
-                    if (isset($topkey->revoke)) {
-                        $encrypt->revoke = $topkey->revoke;
-                    } elseif (!is_null($p_revoke)) {
-                        $encrypt->revoke = $p_revoke;
-                    }
+                        $encrypt = new stdClass();
+                        if (isset($topkey->revoke)) {
+                            $encrypt->revoke = $topkey->revoke;
+                        } elseif (!is_null($p_revoke)) {
+                            $encrypt->revoke = $p_revoke;
+                        }
 
-                    /* Check for explicit key flag subpacket. Require
-                     * this information to be in hashed subpackets. */
-                    if ($val->version === 4) {
-                        $encrypt->created = $this->_parseCreation($val);
+                        /* Check for explicit key flag subpacket. Require
+                         * this information to be in hashed subpackets. */
+                        if ($val->version === 4) {
+                            $encrypt->created = $this->_parseCreation($val);
 
-                        foreach ($val->hashed_subpackets as $val2) {
-                            if ($val2 instanceof OpenPGP_SignaturePacket_KeyFlagsPacket) {
-                                foreach ($val2->flags as $val3) {
-                                    if ($val3 & 0x04) {
-                                        $encrypt->key = $create_out($p, $val);
-                                        $encrypt->fingerprint = $p->fingerprint;
-                                        $encrypt->id = $p->key_id;
-                                        $this->_cache['encrypt'][] = $encrypt;
-                                        continue 3;
+                            foreach ($val->hashed_subpackets as $val2) {
+                                if ($val2 instanceof OpenPGP_SignaturePacket_KeyFlagsPacket) {
+                                    foreach ($val2->flags as $val3) {
+                                        if ($val3 & 0x04) {
+                                            $encrypt->key = $create_out($p, $val);
+                                            $encrypt->fingerprint = $p->fingerprint;
+                                            $encrypt->id = $p->key_id;
+                                            $this->_cache['encrypt'][] = $encrypt;
+                                            continue 3;
+                                        }
                                     }
-                                }
 
-                                /* If the flag wasn't set, we know explicitly
-                                 * that this is not an encrypting key. */
-                                continue 2;
+                                    /* If the flag wasn't set, we know explicitly
+                                     * that this is not an encrypting key. */
+                                    continue 2;
+                                }
                             }
                         }
-                    }
 
-                    if (is_null($fallback)) {
-                        $encrypt->key = $create_out($p, $val);
-                        $fallback = $encrypt;
-                    } elseif (!$sub &&
-                              ($p instanceof OpenPGP_PublicSubkeyPacket) ||
-                              ($p instanceof OpenPGP_SecretSubkeyPacket)) {
-                        $encrypt->key = $create_out($p, $val);
-                        $fallback = $encrypt;
-                        $sub = true;
-                    }
-                    break;
+                        if (is_null($fallback)) {
+                            $encrypt->key = $create_out($p, $val);
+                            $fallback = $encrypt;
+                        } elseif (!$sub
+                                  && ($p instanceof OpenPGP_PublicSubkeyPacket)
+                                  || ($p instanceof OpenPGP_SecretSubkeyPacket)) {
+                            $encrypt->key = $create_out($p, $val);
+                            $fallback = $encrypt;
+                            $sub = true;
+                        }
+                        break;
 
-                case 0x20:
-                    /* Key revocation. */
-                    if ($this->_parseVerify($p, false, $val)) {
-                        $topkey->revoke = $this->_parseRevokePacket($val);
-                    }
-                    break;
+                    case 0x20:
+                        /* Key revocation. */
+                        if ($this->_parseVerify($p, false, $val)) {
+                            $topkey->revoke = $this->_parseRevokePacket($val);
+                        }
+                        break;
 
-                case 0x28:
-                    /* Subkey revocation. */
-                    if ($this->_parseVerify($topkey->key, $p, $val)) {
-                        $p_revoke = $this->_parseRevokePacket($val);
-                    }
-                    break;
+                    case 0x28:
+                        /* Subkey revocation. */
+                        if ($this->_parseVerify($topkey->key, $p, $val)) {
+                            $p_revoke = $this->_parseRevokePacket($val);
+                        }
+                        break;
 
-                case 0x30:
-                    /* Revocation of User ID. */
-                    if ($this->_parseVerify($topkey->key, $userid_p, $val)) {
-                        $userid->revoke = $this->_parseRevokePacket($val);
-                    }
-                    break;
+                    case 0x30:
+                        /* Revocation of User ID. */
+                        if ($this->_parseVerify($topkey->key, $userid_p, $val)) {
+                            $userid->revoke = $this->_parseRevokePacket($val);
+                        }
+                        break;
                 }
             }
         }
@@ -323,8 +323,8 @@ extends Horde_Pgp_Element
             new Horde_Pgp_Element_Message(
                 new OpenPGP_Message(
                     ($data === false)
-                        ? array($key, $sig)
-                        : array($key, $data, $sig)
+                        ? [$key, $sig]
+                        : [$key, $data, $sig]
                 )
             ),
             $this
@@ -351,32 +351,32 @@ extends Horde_Pgp_Element
      */
     protected function _parseRevokePacket($p)
     {
-        $revoke = new stdClass;
+        $revoke = new stdClass();
         $revoke->created = $this->_parseCreation($p);
         $revoke->reason = self::REVOKE_UNKNOWN;
 
         foreach ($p->hashed_subpackets as $val) {
             if ($val instanceof OpenPGP_SignaturePacket_ReasonForRevocationPacket) {
                 switch ($val->code) {
-                case 0x00:
-                    $revoke->reason = self::REVOKE_UNKNOWN;
-                    break;
+                    case 0x00:
+                        $revoke->reason = self::REVOKE_UNKNOWN;
+                        break;
 
-                case 0x01:
-                    $revoke->reason = self::REVOKE_SUPERSEDED;
-                    break;
+                    case 0x01:
+                        $revoke->reason = self::REVOKE_SUPERSEDED;
+                        break;
 
-                case 0x02:
-                    $revoke->reason = self::REVOKE_COMPROMISED;
-                    break;
+                    case 0x02:
+                        $revoke->reason = self::REVOKE_COMPROMISED;
+                        break;
 
-                case 0x03:
-                    $revoke->reason = self::REVOKE_RETIRED;
-                    break;
+                    case 0x03:
+                        $revoke->reason = self::REVOKE_RETIRED;
+                        break;
 
-                case 0x20:
-                    $revoke->reason = self::REVOKE_NOTUSED;
-                    break;
+                    case 0x20:
+                        $revoke->reason = self::REVOKE_NOTUSED;
+                        break;
                 }
 
                 $revoke->info = $val->data;

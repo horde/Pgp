@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -23,8 +24,7 @@
  * @package    Pgp
  * @subpackage UnitTests
  */
-abstract class Horde_Pgp_Backend_TestBase
-extends Horde_Test_Case
+abstract class Horde_Pgp_Backend_TestBase extends Horde_Test_Case
 {
     private $_pgp;
 
@@ -33,9 +33,9 @@ extends Horde_Test_Case
 
     protected function setUp()
     {
-        $this->_pgp = new Horde_Pgp(array(
-            'backends' => $this->_setUp()
-        ));
+        $this->_pgp = new Horde_Pgp([
+            'backends' => $this->_setUp(),
+        ]);
     }
 
     /**
@@ -46,12 +46,12 @@ extends Horde_Test_Case
         $key = $this->_pgp->generateKey(
             'Foo',
             'foo@example.com',
-            array(
+            [
                 'comment' => 'Sample Comment',
                 'expire' => time() + 60,
                 'keylength' => 512,
-                'passphrase' => $passphrase
-            )
+                'passphrase' => $passphrase,
+            ]
         );
 
         $this->assertInstanceOf(
@@ -74,10 +74,10 @@ extends Horde_Test_Case
 
     public function generateKeyProvider()
     {
-        return array(
-            array(null),
-            array('Secret')
-        );
+        return [
+            [null],
+            ['Secret'],
+        ];
     }
 
     /**
@@ -99,19 +99,19 @@ extends Horde_Test_Case
 
     public function decryptProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 $this->_getFixture('pgp_encrypted.txt'),
                 $this->_getPrivateKey('pgp_private.asc', 'Secret'),
                 /* This was encrypted with an extra EOL.*/
-                $this->_getFixture('clear.txt') . "\n"
-            ),
-            array(
+                $this->_getFixture('clear.txt') . "\n",
+            ],
+            [
                 $this->_getFixture('pgp_encrypted_rsa.txt'),
                 $this->_getPrivateKey('pgp_private_rsa.txt', 'Secret'),
-                $this->_getFixture('clear.txt')
-            )
-        );
+                $this->_getFixture('clear.txt'),
+            ],
+        ];
     }
 
     public function testDecryptSymmetric()
@@ -126,7 +126,8 @@ extends Horde_Test_Case
             );
 
             $this->fail('Expecting Exception');
-        } catch (Exception $e) {}
+        } catch (Exception $e) {
+        }
 
         /* Valid passphrase. */
         $result = $this->_pgp->decryptSymmetric(
@@ -186,18 +187,18 @@ extends Horde_Test_Case
 
     public function verifyProvider()
     {
-        return array(
+        return [
             // DSA signature
-            array(
+            [
                 $this->_getFixture('pgp_signed.txt'),
-                $this->_getFixture('pgp_public.asc')
-            ),
+                $this->_getFixture('pgp_public.asc'),
+            ],
             // RSA signature
-            array(
+            [
                 $this->_getFixture('pgp_signed2.txt'),
-                $this->_getFixture('pgp_public_rsa.txt')
-            )
-        );
+                $this->_getFixture('pgp_public_rsa.txt'),
+            ],
+        ];
     }
 
     /**
@@ -225,20 +226,20 @@ extends Horde_Test_Case
 
     public function verifyDetachedProvider()
     {
-        return array(
+        return [
             // DSA signature
-            array(
+            [
                 $this->_getFixture('clear.txt'),
                 $this->_getFixture('pgp_signature.txt'),
-                $this->_getFixture('pgp_public.asc')
-            ),
+                $this->_getFixture('pgp_public.asc'),
+            ],
             // RSA signature
-            array(
+            [
                 $this->_getFixture('clear.txt'),
                 $this->_getFixture('pgp_signature2.txt'),
-                $this->_getFixture('pgp_public_rsa.txt')
-            )
-        );
+                $this->_getFixture('pgp_public_rsa.txt'),
+            ],
+        ];
     }
 
     /**
@@ -268,30 +269,30 @@ extends Horde_Test_Case
 
     public function encryptProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 $this->_getFixture('pgp_public.asc'),
-                array(
-                    $this->_getPrivateKey('pgp_private.asc', 'Secret')
-                ),
-            ),
-            array(
-                $this->_getFixture('pgp_public_rsa.txt'),
-                array(
-                    $this->_getPrivateKey('pgp_private_rsa.txt', 'Secret')
-                )
-            ),
-            array(
-                array(
-                    $this->_getFixture('pgp_public.asc'),
-                    $this->_getFixture('pgp_public_rsa.txt')
-                ),
-                array(
+                [
                     $this->_getPrivateKey('pgp_private.asc', 'Secret'),
-                    $this->_getPrivateKey('pgp_private_rsa.txt', 'Secret')
-                )
-            )
-        );
+                ],
+            ],
+            [
+                $this->_getFixture('pgp_public_rsa.txt'),
+                [
+                    $this->_getPrivateKey('pgp_private_rsa.txt', 'Secret'),
+                ],
+            ],
+            [
+                [
+                    $this->_getFixture('pgp_public.asc'),
+                    $this->_getFixture('pgp_public_rsa.txt'),
+                ],
+                [
+                    $this->_getPrivateKey('pgp_private.asc', 'Secret'),
+                    $this->_getPrivateKey('pgp_private_rsa.txt', 'Secret'),
+                ],
+            ],
+        ];
     }
 
     /**
@@ -304,10 +305,10 @@ extends Horde_Test_Case
         $result = $this->_pgp->encryptSymmetric(
             $data,
             $pass,
-            array(
+            [
                 'cipher' => $cipher,
-                'compress' => $compress
-            )
+                'compress' => $compress,
+            ]
         );
 
         $this->assertInstanceOf(
@@ -336,33 +337,33 @@ extends Horde_Test_Case
 
     public function encryptSymmetricProvider()
     {
-        $ciphers = array(
-            '3DES', 'CAST5', 'AES128', 'AES192', 'AES256', 'Twofish'
-        );
-        $compress = array(
-            'NONE', 'ZIP', 'ZLIB'
-        );
-        $fixtures = array(
-            array(
+        $ciphers = [
+            '3DES', 'CAST5', 'AES128', 'AES192', 'AES256', 'Twofish',
+        ];
+        $compress = [
+            'NONE', 'ZIP', 'ZLIB',
+        ];
+        $fixtures = [
+            [
                 $this->_getFixture('clear.txt'),
-                array(
-                    'Secret'
-                )
-            ),
-            array(
-                $this->_getFixture('clear.txt'),
-                array(
+                [
                     'Secret',
-                    'Second Secret'
-                )
-            )
-        );
+                ],
+            ],
+            [
+                $this->_getFixture('clear.txt'),
+                [
+                    'Secret',
+                    'Second Secret',
+                ],
+            ],
+        ];
 
-        $data = array();
+        $data = [];
         foreach ($compress as $c1) {
             foreach ($ciphers as $c2) {
                 foreach ($fixtures as $f) {
-                    $data[] = array($c1, $c2, $f[0], $f[1]);
+                    $data[] = [$c1, $c2, $f[0], $f[1]];
                 }
             }
         }
@@ -376,17 +377,17 @@ extends Horde_Test_Case
      */
     public function testSign($text, $privkey)
     {
-        $compress = array(
-            'NONE', 'ZIP', 'ZLIB'
-        );
+        $compress = [
+            'NONE', 'ZIP', 'ZLIB',
+        ];
 
         foreach ($compress as $c) {
             $result = $this->_pgp->sign(
                 $text,
                 $privkey,
-                array(
-                    'compress' => $c
-                )
+                [
+                    'compress' => $c,
+                ]
             );
 
             $this->assertInstanceOf(
@@ -443,16 +444,16 @@ extends Horde_Test_Case
 
     public function signProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 $this->_getFixture('clear.txt'),
-                $this->_getPrivateKey('pgp_private.asc', 'Secret')
-            ),
-            array(
+                $this->_getPrivateKey('pgp_private.asc', 'Secret'),
+            ],
+            [
                 $this->_getFixture('clear.txt'),
-                $this->_getPrivateKey('pgp_private_rsa.txt', 'Secret')
-            )
-        );
+                $this->_getPrivateKey('pgp_private_rsa.txt', 'Secret'),
+            ],
+        ];
     }
 
     /* Helper methods. */

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -61,7 +62,7 @@ class Horde_Pgp_Crypt_Elgamal
         $g = new BigInteger($this->_key->key['g'], 256);
         $p = new BigInteger($this->_key->key['p'], 256);
         $y = new BigInteger($this->_key->key['y'], 256);
-        $out = array();
+        $out = [];
 
         foreach (str_split($text, $length) as $m) {
             // EME-PKCS1-v1_5 encoding

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2015-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -23,8 +24,7 @@
  * @property-read Horde_Pgp_Element_Signature $signature  Signature element.
  * @property-read Horde_Pgp_Element_Text $text  Literal text element.
  */
-class Horde_Pgp_Element_SignedMessage
-extends Horde_Pgp_Element
+class Horde_Pgp_Element_SignedMessage extends Horde_Pgp_Element
 {
     /**
      */
@@ -38,11 +38,11 @@ extends Horde_Pgp_Element
      *
      * @return string  Unescaped text.
      */
-    static public function dashUnescapeText($text)
+    public static function dashUnescapeText($text)
     {
         return str_replace(
-            array("\r\n", "\n- -", "\n- From "),
-            array("\n", "\n-", "\nFrom "),
+            ["\r\n", "\n- -", "\n- From "],
+            ["\n", "\n-", "\nFrom "],
             $text
         );
     }
@@ -55,19 +55,19 @@ extends Horde_Pgp_Element
      *
      * @return string  Escaped text.
      */
-    static public function dashEscapeText($text)
+    public static function dashEscapeText($text)
     {
         /* Normalize EOLs and dash escape text output (RFC 4880 [7.1]) */
         return str_replace(
-            array("\r\n", "\n-", "\nFrom "),
-            array("\n", "\n- -", "\n- From "),
+            ["\r\n", "\n-", "\nFrom "],
+            ["\n", "\n- -", "\n- From "],
             $text
         );
     }
 
     /**
      */
-    public function __construct($data, array $headers = array())
+    public function __construct($data, array $headers = [])
     {
         if (!($data instanceof OpenPGP_Message)) {
             Horde_Pgp_Backend_Openpgp::autoload();
@@ -81,10 +81,10 @@ extends Horde_Pgp_Element
 
             $msg[] = new OpenPGP_LiteralDataPacket(
                 self::dashUnescapeText(substr($data, 0, $pos)),
-                array('format' => 'u')
+                ['format' => 'u']
             );
             $msg[] = Horde_Pgp_Element_Signature::create(
-                substr($data, $pos) .  "-----END PGP SIGNATURE-----\n"
+                substr($data, $pos) . "-----END PGP SIGNATURE-----\n"
             )->message[0];
         } else {
             $msg = $data;
@@ -98,13 +98,13 @@ extends Horde_Pgp_Element
     public function __toString()
     {
         $out = "-----BEGIN PGP SIGNED MESSAGE-----\n";
-        foreach (array_intersect_key($this->headers, array('Hash' => true)) as $key => $val) {
+        foreach (array_intersect_key($this->headers, ['Hash' => true]) as $key => $val) {
             $out .= $key . ': ' . $val . "\n";
         }
 
-        return $out . "\n" .
-            self::dashEscapeText($this->text) . "\n" .
-            strval($this->signature);
+        return $out . "\n"
+            . self::dashEscapeText($this->text) . "\n"
+            . strval($this->signature);
     }
 
     /**
@@ -112,15 +112,15 @@ extends Horde_Pgp_Element
     public function __get($name)
     {
         switch ($name) {
-        case 'signature':
-            return new Horde_Pgp_Element_Signature(
-                new OpenPGP_Message(array($this->message[1]))
-            );
+            case 'signature':
+                return new Horde_Pgp_Element_Signature(
+                    new OpenPGP_Message([$this->message[1]])
+                );
 
-        case 'text':
-            return new Horde_Pgp_Element_Text(
-                new OpenPGP_Message(array($this->message[0]))
-            );
+            case 'text':
+                return new Horde_Pgp_Element_Text(
+                    new OpenPGP_Message([$this->message[0]])
+                );
         }
     }
 
